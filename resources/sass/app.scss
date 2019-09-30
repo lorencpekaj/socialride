@@ -7,6 +7,9 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Theme
+@import 'map';
+
 main.content-center {
     min-height: 100vh;
     display: flex;

@@ -21,6 +21,11 @@
 </head>
 <body>
     <div id="app">
+
+        <!-- force google maps overlay in the background -->
+        <google-map></google-map>
+
+        <!-- begin navbar -->
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -72,6 +77,7 @@
             </div>
         </nav>
 
+        <!-- begin body -->
         <main class="py-4">
             @yield('content')
         </main>

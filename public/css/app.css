@@ -10381,6 +10381,15 @@ a.text-dark:focus {
   }
 }
 
+.vue-map-container {
+  position: absolute !important;
+}
+
+.gmap-wrapper {
+  width: 100%;
+  height: 100vh;
+}
+
 main.content-center {
   min-height: 100vh;
   display: flex;
