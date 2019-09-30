@@ -17,8 +17,8 @@ class CreateUserLocationsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->float('lat', 8, 7);
-            $table->float('lng', 8, 7);
+            $table->float('lat', 14, 7);
+            $table->float('lng', 14, 7);
             $table->timestamps();
         });
     }
