@@ -7,4 +7,9 @@ runtime_config:
 env_variables:
   # Put production environment variables here.
   APP_LOG: errorlog
-  APP_KEY: {add key here}
+  APP_KEY:
+  # aws
+  DB_HOST:
+  DB_DATABASE:
+  DB_USERNAME:
+  DB_PASSWORD:
