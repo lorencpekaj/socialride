@@ -36,4 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     *
+     */
+    public function locations()
+    {
+        return $this
+            ->hasMany('App\UserLocation')
+            ->orderBy('created_at', 'desc');
+    }
 }

@@ -1863,6 +1863,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
@@ -1906,8 +1912,14 @@ __webpack_require__.r(__webpack_exports__);
         lng: 144.96
       },
       places: [],
-      currentPlace: null
+      currentPlace: null,
+      userLocationTimer: null
     };
+  },
+  props: ['driving'],
+  created: function created() {
+    // every 60 seconds the user location will update
+    this.userLocationTimer = setInterval(this.geolocate, 60000);
   },
   mounted: function mounted() {
     this.geolocate();
@@ -1935,10 +1947,16 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       navigator.geolocation.getCurrentPosition(function (position) {
-        _this.center = {
+        // store the user location for oneself
+        _this.$root.userLocation = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
-        };
+        }; // post the user location to the database
+
+        axios.post('/user_location', {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
       });
     }
   }
@@ -38192,30 +38210,34 @@ var render = function() {
         {
           staticClass: "gmap-wrapper",
           attrs: {
-            center: { lat: -37.81, lng: 144.96 },
-            zoom: 14,
+            center: _vm.$root.userLocation,
+            zoom: 12,
             "map-type-id": "terrain"
           }
         },
-        _vm._l(this.$root.carMarkers, function(m, index) {
-          return _c("gmap-marker", {
-            key: index,
-            attrs: {
-              position: m.position,
-              icon: {
-                url: __webpack_require__(/*! ../../images/icons/car.jpg */ "./resources/images/icons/car.jpg"),
-                size: { width: 32, height: 32, f: "px", b: "px" },
-                scaledSize: { width: 32, height: 32, f: "px", b: "px" }
+        [
+          _vm._l(this.$root.carMarkers, function(m, index) {
+            return _c("gmap-marker", {
+              key: index,
+              attrs: {
+                position: m.position,
+                icon: {
+                  url: __webpack_require__(/*! ../../images/icons/car.jpg */ "./resources/images/icons/car.jpg"),
+                  size: { width: 32, height: 32, f: "px", b: "px" },
+                  scaledSize: { width: 32, height: 32, f: "px", b: "px" }
+                }
+              },
+              on: {
+                click: function($event) {
+                  _vm.center = m.position
+                }
               }
-            },
-            on: {
-              click: function($event) {
-                _vm.center = m.position
-              }
-            }
-          })
-        }),
-        1
+            })
+          }),
+          _vm._v(" "),
+          _c("gmap-marker", { attrs: { position: _vm.$root.userLocation } })
+        ],
+        2
       )
     ],
     1
@@ -52999,22 +53021,46 @@ Vue.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__, {
 var app = new Vue({
   el: "#app",
   data: {
-    carMarkers: [{
-      position: {
-        lat: -37.8305164,
-        lng: 144.97343190000004
-      }
-    }, {
-      position: {
-        lat: -37.8098087,
-        lng: 144.9651897
-      }
-    }, {
-      position: {
-        lat: -37.8179789,
-        lng: 144.96905760000004
-      }
-    }]
+    user: null,
+    userLocation: {
+      lat: 0,
+      lng: 0
+    },
+    carMarkerTimer: null,
+    carMarkers: []
+  },
+  created: function created() {
+    // every 10 seconds the user location will update
+    this.carMarkerTimer = setInterval(this.carMarkerUpdate, 10000);
+  },
+  mounted: function mounted() {
+    this.fetchUser();
+    this.carMarkerUpdate();
+  },
+  methods: {
+    // store user object in the user
+    fetchUser: function fetchUser() {
+      var _this = this;
+
+      axios.get('/me').then(function (response) {
+        _this.user = response.data;
+      });
+    },
+    // update the car markers periodically
+    carMarkerUpdate: function carMarkerUpdate() {
+      var _this2 = this;
+
+      axios.get('/user_location').then(function (response) {
+        _this2.carMarkers = response.data.map(function (key) {
+          return {
+            position: {
+              lat: parseFloat(key.position.lat),
+              lng: parseFloat(key.position.lng)
+            }
+          };
+        });
+      });
+    }
   },
   components: {
     "google-map": __webpack_require__(/*! ./components/GoogleMap.vue */ "./resources/js/components/GoogleMap.vue")["default"],
@@ -53225,8 +53271,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\socialride\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\socialride\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -38,13 +38,50 @@ Vue.use(VueGoogleMaps, {
  */
 const app = new Vue({
     el: "#app",
+
     data: {
-        carMarkers: [
-            { position: { lat: -37.8305164, lng: 144.97343190000004 } },
-            { position: { lat: -37.8098087, lng: 144.9651897 } },
-            { position: { lat: -37.8179789, lng: 144.96905760000004 } }
-        ]
+        user: null,
+        userLocation: {
+            lat: 0,
+            lng: 0
+        },
+        carMarkerTimer: null,
+        carMarkers: []
     },
+
+    created: function () {
+        // every 10 seconds the user location will update
+        this.carMarkerTimer = setInterval(this.carMarkerUpdate, 10000);
+    },
+
+    mounted: function () {
+        this.fetchUser();
+        this.carMarkerUpdate();
+    },
+
+    methods: {
+        // store user object in the user
+        fetchUser: function () {
+            axios.get('/me').then(response => {
+                this.user = response.data;
+            });
+        },
+
+        // update the car markers periodically
+        carMarkerUpdate: function () {
+            axios.get('/user_location').then(response => {
+                this.carMarkers = response.data.map(key => {
+                    return {
+                        position: {
+                            lat: parseFloat(key.position.lat),
+                            lng: parseFloat(key.position.lng)
+                        }
+                    };
+                });
+            });
+        }
+    },
+
     components: {
         "google-map": require("./components/GoogleMap.vue").default,
         "request-ride": require("./components/RequestRide.vue").default

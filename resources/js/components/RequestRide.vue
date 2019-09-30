@@ -21,8 +21,16 @@ export default {
             // change this to whatever makes sense
             center: { lat: -37.81, lng: 144.96 },
             places: [],
-            currentPlace: null
+            currentPlace: null,
+            userLocationTimer: null
         };
+    },
+
+    props: ['driving'],
+
+    created() {
+        // every 60 seconds the user location will update
+        this.userLocationTimer = setInterval(this.geolocate, 60000);
     },
 
     mounted() {
@@ -48,10 +56,17 @@ export default {
         },
         geolocate: function() {
             navigator.geolocation.getCurrentPosition(position => {
-                this.center = {
+                // store the user location for oneself
+                this.$root.userLocation = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
+
+                // post the user location to the database
+                axios.post('/user_location', {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                });
             });
         }
     }

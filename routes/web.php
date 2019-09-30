@@ -11,6 +11,11 @@
 |
 */
 
+// Simple route to store the user data
+Route::get('me', function () {
+    return response()->json(Auth::user());
+});
+
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
@@ -23,6 +28,9 @@ Route::post('register', 'Auth\RegisterController@register');
 // Password Reset Routes...
 Route::resetPassword();
 Route::emailVerification();
+
+// User location
+Route::resource('user_location', 'UserLocationController');
 
 // Homepage
 Route::get('/', 'HomeController@index')->middleware('auth')->name('home');

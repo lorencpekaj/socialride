@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
-            <request-ride></request-ride>
+            <request-ride />
 
             <div class="card">
                 <div class="card-header">Dashboard</div>
