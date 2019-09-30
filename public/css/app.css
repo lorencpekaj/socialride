@@ -10390,6 +10390,16 @@ a.text-dark:focus {
   height: 100vh;
 }
 
+.location-search {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.location-search button {
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
 main.content-center {
   min-height: 100vh;
   display: flex;

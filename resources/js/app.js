@@ -4,11 +4,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import * as VueGoogleMaps from 'vue2-google-maps'
+import * as VueGoogleMaps from "vue2-google-maps";
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 
 /**
  * The following block of code may be used to automatically register your
@@ -21,41 +21,32 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
 Vue.use(VueGoogleMaps, {
     load: {
-      key: 'AIzaSyBhCWsRqYhpi1ODCMoxrKbQj9jKs8YBvEs',
-      libraries: 'places', // This is required if you use the Autocomplete plugin
-      // OR: libraries: 'places,drawing'
-      // OR: libraries: 'places,drawing,visualization'
-      // (as you require)
-
-      //// If you want to set the version, you can do so:
-      // v: '3.26',
-    },
-
-    //// If you intend to programmatically custom event listener code
-    //// (e.g. `this.$refs.gmap.$on('zoom_changed', someFunc)`)
-    //// instead of going through Vue templates (e.g. `<GmapMap @zoom_changed="someFunc">`)
-    //// you might need to turn this on.
-    // autobindAllEvents: false,
-
-    //// If you want to manually install components, e.g.
-    //// import {GmapMarker} from 'vue2-google-maps/src/components/marker'
-    //// Vue.component('GmapMarker', GmapMarker)
-    //// then disable the following:
-    // installComponents: true,
-  });
-
-Vue.component('google-map', require('./components/GoogleMap.vue').default);
+        key: "AIzaSyBhCWsRqYhpi1ODCMoxrKbQj9jKs8YBvEs",
+        libraries: "places" // This is required if you use the Autocomplete plugin
+        // OR: libraries: 'places,drawing'
+        // OR: libraries: 'places,drawing,visualization'
+        // (as you require)
+    }
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
 const app = new Vue({
-    el: '#app',
+    el: "#app",
+    data: {
+        carMarkers: [
+            { position: { lat: -37.8305164, lng: 144.97343190000004 } },
+            { position: { lat: -37.8098087, lng: 144.9651897 } },
+            { position: { lat: -37.8179789, lng: 144.96905760000004 } }
+        ]
+    },
+    components: {
+        "google-map": require("./components/GoogleMap.vue").default,
+        "request-ride": require("./components/RequestRide.vue").default
+    }
 });
