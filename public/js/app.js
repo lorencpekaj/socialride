@@ -1869,8 +1869,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    this.$root.mapRef = this.$refs.mapRef;
+  },
   computed: {
     google: vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__["gmapApi"]
   }
@@ -1905,13 +1909,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      // default to Montreal to keep it simple
-      // change this to whatever makes sense
-      center: {
-        lat: -37.81,
-        lng: 144.96
-      },
-      places: [],
       currentPlace: null,
       userLocationTimer: null
     };
@@ -1931,15 +1928,26 @@ __webpack_require__.r(__webpack_exports__);
     },
     addMarker: function addMarker() {
       if (this.currentPlace) {
-        var marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
-        };
-        this.$root.carMarkers.push({
-          position: marker
+        var directionsService = new google.maps.DirectionsService();
+        var directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay.setMap(this.$root.mapRef.$mapObject);
+        directionsService.route({
+          origin: this.$root.userLocation,
+          destination: {
+            lat: this.currentPlace.geometry.location.lat(),
+            lng: this.currentPlace.geometry.location.lng()
+          },
+          travelMode: 'DRIVING'
+        }, function (response, status) {
+          if (status === 'OK') {
+            // $('#distance').text(directionsResult.routes[0].legs[0].distance.text);
+            // $('#duration').text(directionsResult.routes[0].legs[0].duration.text);
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
         });
-        this.places.push(this.currentPlace);
-        this.center = marker;
+        this.$root.userDestinationLocation = marker;
         this.currentPlace = null;
       }
     },
@@ -38208,6 +38216,7 @@ var render = function() {
       _c(
         "GmapMap",
         {
+          ref: "mapRef",
           staticClass: "gmap-wrapper",
           attrs: {
             center: _vm.$root.userLocation,
@@ -53021,8 +53030,13 @@ Vue.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__, {
 var app = new Vue({
   el: "#app",
   data: {
+    mapRef: null,
     user: null,
     userLocation: {
+      lat: 0,
+      lng: 0
+    },
+    userDestinationLocation: {
       lat: 0,
       lng: 0
     },
@@ -53271,8 +53285,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\socialride\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\socialride\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

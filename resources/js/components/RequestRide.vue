@@ -17,10 +17,6 @@
 export default {
     data() {
         return {
-            // default to Montreal to keep it simple
-            // change this to whatever makes sense
-            center: { lat: -37.81, lng: 144.96 },
-            places: [],
             currentPlace: null,
             userLocationTimer: null
         };
@@ -44,13 +40,28 @@ export default {
         },
         addMarker() {
             if (this.currentPlace) {
-                const marker = {
-                    lat: this.currentPlace.geometry.location.lat(),
-                    lng: this.currentPlace.geometry.location.lng()
-                };
-                this.$root.carMarkers.push({ position: marker });
-                this.places.push(this.currentPlace);
-                this.center = marker;
+                const directionsService = new google.maps.DirectionsService;
+                const directionsDisplay = new google.maps.DirectionsRenderer;
+                directionsDisplay.setMap(this.$root.mapRef.$mapObject);
+
+                directionsService.route({
+                    origin: this.$root.userLocation,
+                    destination: {
+                        lat: this.currentPlace.geometry.location.lat(),
+                        lng: this.currentPlace.geometry.location.lng()
+                    },
+                    travelMode: 'DRIVING'
+                }, function(response, status) {
+                    if (status === 'OK') {
+                        // $('#distance').text(directionsResult.routes[0].legs[0].distance.text);
+                        // $('#duration').text(directionsResult.routes[0].legs[0].duration.text);
+                        directionsDisplay.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                });
+
+                this.$root.userDestinationLocation = marker;
                 this.currentPlace = null;
             }
         },

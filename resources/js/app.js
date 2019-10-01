@@ -40,8 +40,13 @@ const app = new Vue({
     el: "#app",
 
     data: {
+        mapRef: null,
         user: null,
         userLocation: {
+            lat: 0,
+            lng: 0
+        },
+        userDestinationLocation: {
             lat: 0,
             lng: 0
         },

@@ -1,6 +1,7 @@
 <template>
     <div>
         <GmapMap
+            ref="mapRef"
             :center="$root.userLocation"
             :zoom="12"
             map-type-id="terrain"
@@ -31,8 +32,11 @@
 import { gmapApi } from 'vue2-google-maps'
 
 export default {
+    mounted() {
+        this.$root.mapRef = this.$refs.mapRef;
+    },
     computed: {
-        google: gmapApi
+        google: gmapApi,
     }
 }
 </script>
