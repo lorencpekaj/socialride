@@ -38484,7 +38484,7 @@ var staticRenderFns = [
       _c(
         "h5",
         { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
-        [_vm._v("Modal title")]
+        [_vm._v("Request a driver")]
       ),
       _vm._v(" "),
       _c(
