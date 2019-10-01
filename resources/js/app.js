@@ -89,6 +89,6 @@ const app = new Vue({
 
     components: {
         "google-map": require("./components/GoogleMap.vue").default,
-        "request-ride": require("./components/RequestRide.vue").default
+        "request-ride": require("./components/RequestRide.vue").default,
     }
 });

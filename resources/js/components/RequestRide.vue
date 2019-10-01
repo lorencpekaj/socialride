@@ -10,6 +10,7 @@
         >
             Request Pickup
         </button>
+        <trip-modal ref="tripInfo" :trip.sync="directionsData"></trip-modal>
     </div>
 </template>
 
@@ -18,7 +19,8 @@ export default {
     data() {
         return {
             currentPlace: null,
-            userLocationTimer: null
+            userLocationTimer: null,
+            directionsData: null,
         };
     },
 
@@ -33,6 +35,10 @@ export default {
         this.geolocate();
     },
 
+    components: {
+        "trip-modal": require("./TripModal.vue").default,
+    },
+
     methods: {
         // receives a place object via the autocomplete component
         setPlace(place) {
@@ -40,22 +46,30 @@ export default {
         },
         addMarker() {
             if (this.currentPlace) {
+                const marker = {
+                    lat: this.currentPlace.geometry.location.lat(),
+                    lng: this.currentPlace.geometry.location.lng()
+                };
                 const directionsService = new google.maps.DirectionsService;
                 const directionsDisplay = new google.maps.DirectionsRenderer;
+                const tripInfoModal = this.$refs.tripInfo;
                 directionsDisplay.setMap(this.$root.mapRef.$mapObject);
 
                 directionsService.route({
                     origin: this.$root.userLocation,
-                    destination: {
-                        lat: this.currentPlace.geometry.location.lat(),
-                        lng: this.currentPlace.geometry.location.lng()
-                    },
+                    destination: marker,
                     travelMode: 'DRIVING'
                 }, function(response, status) {
                     if (status === 'OK') {
                         // $('#distance').text(directionsResult.routes[0].legs[0].distance.text);
                         // $('#duration').text(directionsResult.routes[0].legs[0].duration.text);
+
+                        this.directionsData = response.routes[0].legs[0];
+                        // tripInfoModal.$props.trip = this.directionsData;
+                        $(tripInfoModal.$el).modal('show');
+                        console.log(this.directionsData);
                         directionsDisplay.setDirections(response);
+
                     } else {
                         window.alert('Directions request failed due to ' + status);
                     }
