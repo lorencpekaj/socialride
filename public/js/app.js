@@ -1906,14 +1906,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       currentPlace: null,
-      userLocationTimer: null
+      userLocationTimer: null,
+      tripData: {},
+      directionsDisplay: null
     };
   },
-  props: ['driving'],
   created: function created() {
     // every 60 seconds the user location will update
     this.userLocationTimer = setInterval(this.geolocate, 60000);
@@ -1921,28 +1927,44 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.geolocate();
   },
+  components: {
+    "trip-modal": __webpack_require__(/*! ./TripModal.vue */ "./resources/js/components/TripModal.vue")["default"]
+  },
   methods: {
     // receives a place object via the autocomplete component
     setPlace: function setPlace(place) {
       this.currentPlace = place;
     },
+    setTripData: function setTripData(data) {
+      this.tripData = data;
+    },
     addMarker: function addMarker() {
+      var _this = this;
+
       if (this.currentPlace) {
+        var marker = {
+          lat: this.currentPlace.geometry.location.lat(),
+          lng: this.currentPlace.geometry.location.lng()
+        }; // clear existing directions
+
+        if (this.directionsDisplay) {
+          this.directionsDisplay.setMap(null);
+        }
+
+        this.directionsDisplay = new google.maps.DirectionsRenderer();
+        this.directionsDisplay.setMap(this.$root.mapRef.$mapObject);
         var directionsService = new google.maps.DirectionsService();
-        var directionsDisplay = new google.maps.DirectionsRenderer();
-        directionsDisplay.setMap(this.$root.mapRef.$mapObject);
         directionsService.route({
           origin: this.$root.userLocation,
-          destination: {
-            lat: this.currentPlace.geometry.location.lat(),
-            lng: this.currentPlace.geometry.location.lng()
-          },
+          destination: marker,
           travelMode: 'DRIVING'
         }, function (response, status) {
           if (status === 'OK') {
-            // $('#distance').text(directionsResult.routes[0].legs[0].distance.text);
-            // $('#duration').text(directionsResult.routes[0].legs[0].duration.text);
-            directionsDisplay.setDirections(response);
+            _this.directionsDisplay.setDirections(response);
+
+            _this.setTripData(response.routes[0].legs[0]);
+
+            $(_this.$refs.tripInfo.$el).modal('show');
           } else {
             window.alert('Directions request failed due to ' + status);
           }
@@ -1952,11 +1974,11 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     geolocate: function geolocate() {
-      var _this = this;
+      var _this2 = this;
 
       navigator.geolocation.getCurrentPosition(function (position) {
         // store the user location for oneself
-        _this.$root.userLocation = {
+        _this2.$root.userLocation = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }; // post the user location to the database
@@ -1966,6 +1988,76 @@ __webpack_require__.r(__webpack_exports__);
           lng: position.coords.longitude
         });
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TripModal.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TripModal.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['distance', 'duration', 'end_address', 'end_location', 'start_address', 'start_location'],
+  computed: {
+    distanceText: function distanceText() {
+      return this.distance ? this.distance.text : '';
+    },
+    durationText: function durationText() {
+      return this.duration ? this.duration.text : '';
+    }
+  },
+  methods: {
+    requestRide: function requestRide() {
+      var start_position = {
+        'lat': this.start_location.lat(),
+        'lng': this.start_location.lng()
+      };
+      var end_position = {
+        'lat': this.end_location.lat(),
+        'lng': this.end_location.lng()
+      };
+      console.log(start_position, end_position);
     }
   }
 });
@@ -38287,12 +38379,129 @@ var render = function() {
         "button",
         { staticClass: "btn btn-lg btn-primary", on: { click: _vm.addMarker } },
         [_vm._v("\n        Request Pickup\n    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "trip-modal",
+        _vm._b({ ref: "tripInfo" }, "trip-modal", _vm.tripData, false)
       )
     ],
     1
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TripModal.vue?vue&type=template&id=ce29e8a6&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TripModal.vue?vue&type=template&id=ce29e8a6& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "modal fade",
+      attrs: {
+        tabindex: "-1",
+        role: "dialog",
+        "aria-labelledby": "exampleModalLabel",
+        "aria-hidden": "true"
+      }
+    },
+    [
+      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+        _c("div", { staticClass: "modal-content" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-body" }, [
+            _c("p", { staticClass: "font-weight-bold" }, [
+              _vm._v("You are requesting pickup from")
+            ]),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(_vm.start_address))]),
+            _vm._v(" "),
+            _c("p", { staticClass: "font-weight-bold" }, [
+              _vm._v("Your destination is")
+            ]),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(_vm.end_address))]),
+            _vm._v(" "),
+            _c("p", { staticClass: "text-info" }, [
+              _vm._v(
+                "Your travel of " +
+                  _vm._s(_vm.distanceText) +
+                  " will take " +
+                  _vm._s(_vm.durationText)
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "modal" }
+              },
+              [_vm._v("Close")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: { click: _vm.requestRide }
+              },
+              [_vm._v("\n                    Request Ride\n                ")]
+            )
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Modal title")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -53267,6 +53476,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/TripModal.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/TripModal.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TripModal_vue_vue_type_template_id_ce29e8a6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TripModal.vue?vue&type=template&id=ce29e8a6& */ "./resources/js/components/TripModal.vue?vue&type=template&id=ce29e8a6&");
+/* harmony import */ var _TripModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TripModal.vue?vue&type=script&lang=js& */ "./resources/js/components/TripModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TripModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TripModal_vue_vue_type_template_id_ce29e8a6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TripModal_vue_vue_type_template_id_ce29e8a6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TripModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TripModal.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/TripModal.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TripModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TripModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TripModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TripModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/TripModal.vue?vue&type=template&id=ce29e8a6&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/TripModal.vue?vue&type=template&id=ce29e8a6& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TripModal_vue_vue_type_template_id_ce29e8a6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TripModal.vue?vue&type=template&id=ce29e8a6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TripModal.vue?vue&type=template&id=ce29e8a6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TripModal_vue_vue_type_template_id_ce29e8a6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TripModal_vue_vue_type_template_id_ce29e8a6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -53285,8 +53563,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\socialride\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\socialride\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
