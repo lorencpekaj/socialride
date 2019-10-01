@@ -10,11 +10,22 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{ JSON.stringify(this.mutableTrip) }}
+                    <p class="font-weight-bold">You are requesting pickup from</p>
+                    <p>{{ start_address }}</p>
+                    <p class="font-weight-bold">Your destination is</p>
+                    <p>{{ end_address }}</p>
+
+                    <p class="text-info">Your travel of {{ distanceText }} will take {{ durationText }}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="requestRide"
+                    >
+                        Request Ride
+                    </button>
                 </div>
             </div>
         </div>
@@ -23,19 +34,37 @@
 
 <script>
 export default {
-    props: ['trip'],
+    props: [
+        'distance',
+        'duration',
+        'end_address',
+        'end_location',
+        'start_address',
+        'start_location',
+    ],
 
-    data: function () {
-            console.log('lol');
-        return {
-            mutableTrip: this.trip
+    computed: {
+        distanceText() {
+            return this.distance ? this.distance.text : '';
+        },
+        durationText() {
+            return this.duration ? this.duration.text : '';
         }
     },
 
-    watch: {
-        list: function () {
-            console.log('lol');
-            this.mutableTrip = this.trip;
+    methods: {
+        requestRide: function () {
+            const start_position = {
+                'lat': this.start_location.lat(),
+                'lng': this.start_location.lng(),
+            };
+
+            const end_position = {
+                'lat': this.end_location.lat(),
+                'lng': this.end_location.lng(),
+            };
+
+            console.log(start_position, end_position);
         }
     }
 }

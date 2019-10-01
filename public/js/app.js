@@ -1907,15 +1907,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       currentPlace: null,
       userLocationTimer: null,
-      directionsData: null
+      tripData: {},
+      directionsDisplay: null
     };
   },
-  props: ['driving'],
   created: function created() {
     // every 60 seconds the user location will update
     this.userLocationTimer = setInterval(this.geolocate, 60000);
@@ -1931,29 +1935,36 @@ __webpack_require__.r(__webpack_exports__);
     setPlace: function setPlace(place) {
       this.currentPlace = place;
     },
+    setTripData: function setTripData(data) {
+      this.tripData = data;
+    },
     addMarker: function addMarker() {
+      var _this = this;
+
       if (this.currentPlace) {
         var marker = {
           lat: this.currentPlace.geometry.location.lat(),
           lng: this.currentPlace.geometry.location.lng()
-        };
+        }; // clear existing directions
+
+        if (this.directionsDisplay) {
+          this.directionsDisplay.setMap(null);
+        }
+
+        this.directionsDisplay = new google.maps.DirectionsRenderer();
+        this.directionsDisplay.setMap(this.$root.mapRef.$mapObject);
         var directionsService = new google.maps.DirectionsService();
-        var directionsDisplay = new google.maps.DirectionsRenderer();
-        var tripInfoModal = this.$refs.tripInfo;
-        directionsDisplay.setMap(this.$root.mapRef.$mapObject);
         directionsService.route({
           origin: this.$root.userLocation,
           destination: marker,
           travelMode: 'DRIVING'
         }, function (response, status) {
           if (status === 'OK') {
-            // $('#distance').text(directionsResult.routes[0].legs[0].distance.text);
-            // $('#duration').text(directionsResult.routes[0].legs[0].duration.text);
-            this.directionsData = response.routes[0].legs[0]; // tripInfoModal.$props.trip = this.directionsData;
+            _this.directionsDisplay.setDirections(response);
 
-            $(tripInfoModal.$el).modal('show');
-            console.log(this.directionsData);
-            directionsDisplay.setDirections(response);
+            _this.setTripData(response.routes[0].legs[0]);
+
+            $(_this.$refs.tripInfo.$el).modal('show');
           } else {
             window.alert('Directions request failed due to ' + status);
           }
@@ -1963,11 +1974,11 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     geolocate: function geolocate() {
-      var _this = this;
+      var _this2 = this;
 
       navigator.geolocation.getCurrentPosition(function (position) {
         // store the user location for oneself
-        _this.$root.userLocation = {
+        _this2.$root.userLocation = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         }; // post the user location to the database
@@ -2015,18 +2026,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['trip'],
-  data: function data() {
-    console.log('lol');
-    return {
-      mutableTrip: this.trip
-    };
+  props: ['distance', 'duration', 'end_address', 'end_location', 'start_address', 'start_location'],
+  computed: {
+    distanceText: function distanceText() {
+      return this.distance ? this.distance.text : '';
+    },
+    durationText: function durationText() {
+      return this.duration ? this.duration.text : '';
+    }
   },
-  watch: {
-    list: function list() {
-      console.log('lol');
-      this.mutableTrip = this.trip;
+  methods: {
+    requestRide: function requestRide() {
+      var start_position = {
+        'lat': this.start_location.lat(),
+        'lng': this.start_location.lng()
+      };
+      var end_position = {
+        'lat': this.end_location.lat(),
+        'lng': this.end_location.lng()
+      };
+      console.log(start_position, end_position);
     }
   }
 });
@@ -38350,15 +38381,10 @@ var render = function() {
         [_vm._v("\n        Request Pickup\n    ")]
       ),
       _vm._v(" "),
-      _c("trip-modal", {
-        ref: "tripInfo",
-        attrs: { trip: _vm.directionsData },
-        on: {
-          "update:trip": function($event) {
-            _vm.directionsData = $event
-          }
-        }
-      })
+      _c(
+        "trip-modal",
+        _vm._b({ ref: "tripInfo" }, "trip-modal", _vm.tripData, false)
+      )
     ],
     1
   )
@@ -38402,14 +38428,48 @@ var render = function() {
           _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "modal-body" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(JSON.stringify(this.mutableTrip)) +
-                "\n            "
-            )
+            _c("p", { staticClass: "font-weight-bold" }, [
+              _vm._v("You are requesting pickup from")
+            ]),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(_vm.start_address))]),
+            _vm._v(" "),
+            _c("p", { staticClass: "font-weight-bold" }, [
+              _vm._v("Your destination is")
+            ]),
+            _vm._v(" "),
+            _c("p", [_vm._v(_vm._s(_vm.end_address))]),
+            _vm._v(" "),
+            _c("p", { staticClass: "text-info" }, [
+              _vm._v(
+                "Your travel of " +
+                  _vm._s(_vm.distanceText) +
+                  " will take " +
+                  _vm._s(_vm.durationText)
+              )
+            ])
           ]),
           _vm._v(" "),
-          _vm._m(1)
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "modal" }
+              },
+              [_vm._v("Close")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: { click: _vm.requestRide }
+              },
+              [_vm._v("\n                    Request Ride\n                ")]
+            )
+          ])
         ])
       ])
     ]
@@ -38438,27 +38498,6 @@ var staticRenderFns = [
           }
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("Save changes")]
       )
     ])
   }
@@ -53524,8 +53563,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\socialride\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\socialride\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

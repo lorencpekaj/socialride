@@ -10,7 +10,11 @@
         >
             Request Pickup
         </button>
-        <trip-modal ref="tripInfo" :trip.sync="directionsData"></trip-modal>
+        <trip-modal
+            ref="tripInfo"
+            v-bind="tripData"
+
+        ></trip-modal>
     </div>
 </template>
 
@@ -20,11 +24,10 @@ export default {
         return {
             currentPlace: null,
             userLocationTimer: null,
-            directionsData: null,
+            tripData: {},
+            directionsDisplay: null,
         };
     },
-
-    props: ['driving'],
 
     created() {
         // every 60 seconds the user location will update
@@ -44,32 +47,35 @@ export default {
         setPlace(place) {
             this.currentPlace = place;
         },
+        setTripData(data) {
+            this.tripData = data;
+        },
         addMarker() {
             if (this.currentPlace) {
                 const marker = {
                     lat: this.currentPlace.geometry.location.lat(),
                     lng: this.currentPlace.geometry.location.lng()
                 };
-                const directionsService = new google.maps.DirectionsService;
-                const directionsDisplay = new google.maps.DirectionsRenderer;
-                const tripInfoModal = this.$refs.tripInfo;
-                directionsDisplay.setMap(this.$root.mapRef.$mapObject);
 
+                // clear existing directions
+                if (this.directionsDisplay) {
+                    this.directionsDisplay.setMap(null);
+                }
+
+                this.directionsDisplay = new google.maps.DirectionsRenderer;
+                this.directionsDisplay.setMap(this.$root.mapRef.$mapObject);
+
+                const directionsService = new google.maps.DirectionsService;
                 directionsService.route({
                     origin: this.$root.userLocation,
                     destination: marker,
                     travelMode: 'DRIVING'
-                }, function(response, status) {
+                },
+                (response, status) => {
                     if (status === 'OK') {
-                        // $('#distance').text(directionsResult.routes[0].legs[0].distance.text);
-                        // $('#duration').text(directionsResult.routes[0].legs[0].duration.text);
-
-                        this.directionsData = response.routes[0].legs[0];
-                        // tripInfoModal.$props.trip = this.directionsData;
-                        $(tripInfoModal.$el).modal('show');
-                        console.log(this.directionsData);
-                        directionsDisplay.setDirections(response);
-
+                        this.directionsDisplay.setDirections(response);
+                        this.setTripData(response.routes[0].legs[0]);
+                        $(this.$refs.tripInfo.$el).modal('show');
                     } else {
                         window.alert('Directions request failed due to ' + status);
                     }
@@ -79,6 +85,7 @@ export default {
                 this.currentPlace = null;
             }
         },
+
         geolocate: function() {
             navigator.geolocation.getCurrentPosition(position => {
                 // store the user location for oneself
