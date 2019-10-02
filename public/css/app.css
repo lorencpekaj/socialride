@@ -10400,6 +10400,21 @@ a.text-dark:focus {
   margin-left: 10px;
 }
 
+.pending-riders-wrap {
+  position: fixed;
+  width: 100%;
+  bottom: 50px;
+}
+
+.list-group-passengers {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.list-group-passengers .list-group-item h5 {
+  font-weight: 600;
+}
+
 main.content-center {
   min-height: 100vh;
   display: flex;

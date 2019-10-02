@@ -1,0 +1,14 @@
+.pending-riders-wrap {
+    position: fixed;
+    width: 100%;
+    bottom: 50px;
+}
+
+.list-group-passengers {
+    max-height: 200px;
+    overflow-y: scroll;
+
+    .list-group-item h5 {
+        font-weight: 600;
+    }
+}
