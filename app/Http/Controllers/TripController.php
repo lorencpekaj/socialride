@@ -134,7 +134,10 @@ class TripController extends Controller
      */
     public function delete(Trip $trip, Request $request)
     {
-        if ($trip->delete()) {
+        $user = \Auth::user();
+        if ($trip->driver_id !== $user->id || $trip->passenger_id !== $user->id) {
+            return $this->error('You are not allocated in this trip');
+        } else if ($trip->delete()) {
             return $this->success($trip->only('id'));
         } else {
             return $this->error('Unable to remove resource');
