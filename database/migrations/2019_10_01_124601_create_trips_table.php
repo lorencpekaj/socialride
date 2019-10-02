@@ -16,9 +16,9 @@ class CreateTripsTable extends Migration
         Schema::create('trips', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('passenger_id');
-            $table->foreign('passenger_id')->references('id')->on('users');
+            $table->foreign('passenger_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('driver_id')->nullable();
-            $table->foreign('driver_id')->references('id')->on('users');
+            $table->foreign('driver_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedInteger('distance');
             $table->unsignedInteger('duration');
             $table->timestamps();

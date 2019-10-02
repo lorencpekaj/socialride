@@ -16,7 +16,7 @@ class CreatePickUpTable extends Migration
         Schema::create('pick_up', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('trip_id');
-            $table->foreign('trip_id')->references('id')->on('trips');
+            $table->foreign('trip_id')->references('id')->on('trips')->onDelete('cascade');
             $table->float('lat', 14, 7);
             $table->float('lng', 14, 7);
             $table->string('address')->nullable();
