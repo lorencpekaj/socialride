@@ -37,6 +37,7 @@ Route::prefix('trip')
     ->middleware('auth')
     ->group(function () {
         Route::post('/request_pickup', 'TripController@requestPickup');
+        Route::post('/accept/{trip}', 'TripController@acceptPickup');
         Route::get('/available', 'TripController@availableTrips');
     });
 

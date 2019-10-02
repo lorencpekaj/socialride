@@ -7,7 +7,7 @@
 
             <request-ride></request-ride>
 
-            <div class="card">
+            {{-- <div class="card">
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
@@ -19,18 +19,10 @@
 
                     You are logged in!
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
 
-<div class="pending-riders-wrap">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <pending-riders></pending-riders>
-            </div>
-        </div>
-    </div>
-    </div>
+<pending-riders></pending-riders>
 @endsection

@@ -9,6 +9,15 @@ class Trip extends Model
     protected $table = 'trips';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'driver_id'
+    ];
+
+    /**
      * Return the drop off location of the trip
      */
     public function dropOff()

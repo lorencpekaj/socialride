@@ -54,6 +54,29 @@ class TripController extends Controller
     }
 
     /**
+     * Request a pickup by a passenger
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function acceptPickup(Trip $trip, Request $request)
+    {
+        if ($trip->driver_id !== null) {
+            return $this->error('Somebody has already decided to drive this');
+        }
+
+        $success = $trip->update([
+            'driver_id' => $request->input('driver_id')
+        ]);
+
+        if ($success) {
+            return $this->success($trip->toArray());
+        } else {
+            return $this->error('Could not allocate driver');
+        }
+    }
+
+    /**
      * Display a listing of all unallocated trips for drivers
      *
      * @return \Illuminate\Http\Response
@@ -68,7 +91,7 @@ class TripController extends Controller
                     'id' => $trip->id,
                     'passenger' => [
                         'id' => $trip->passenger->id,
-                        'name' => $trip->passenger->name,
+                        'name' => ucwords($trip->passenger->name),
                     ],
                     'duration' => $trip->duration,
                     'distance' => $trip->distance,
