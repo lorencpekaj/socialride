@@ -39,6 +39,7 @@ Route::prefix('trip')
         Route::post('/request_pickup', 'TripController@requestPickup');
         Route::post('/accept/{trip}', 'TripController@acceptPickup');
         Route::get('/available', 'TripController@availableTrips');
+        Route::delete('/{trip}', 'TripController@delete');
     });
 
 // Homepage

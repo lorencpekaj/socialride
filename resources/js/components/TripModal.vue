@@ -69,6 +69,7 @@ export default {
                         'address': this.end_address,
                     }
                 })
+                .then(() => $(this.$el).modal('hide'))
                 .catch((error) => {
                     const response = error.response.data;
                     if (response.success === false) {

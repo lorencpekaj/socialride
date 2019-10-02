@@ -1,5 +1,5 @@
 <template>
-    <div class="location-search">
+    <div class="location-search" v-if="this.$root.userTrip === null">
         <gmap-autocomplete
             @place_changed="setPlace"
             class="form-control form-control-lg"

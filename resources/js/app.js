@@ -46,6 +46,7 @@ const app = new Vue({
             lat: 0,
             lng: 0
         },
+        userTrip: null,
         userDestinationLocation: {
             lat: 0,
             lng: 0
@@ -97,7 +98,14 @@ const app = new Vue({
             axios
                 .get('/trip/available')
                 .then(({ data }) => {
-                    this.availableTrips = data.data;
+                    const currentTrip = data.data.current_trip;
+                    if (currentTrip) {
+                        this.userTrip = currentTrip;
+                        this.availableTrips = [];
+                    } else {
+                        this.userTrip = null;
+                        this.availableTrips = data.data;
+                    }
                 });
         },
     },

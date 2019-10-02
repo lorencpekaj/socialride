@@ -5,7 +5,11 @@
                 <div class="row justify-content-center">
                     <div class="col-md-8">
 
-                        <div class="card card-passengers">
+                        <!-- show trip status -->
+                        <trip-status></trip-status>
+
+                        <!-- show available trips otherwise -->
+                        <div class="card card-passengers" v-if="trips.length">
                             <div class="card-header">
                                 Passengers awaiting for a driver
                                 <button
@@ -83,10 +87,11 @@ export default {
         selectTrip(trip) {
             this.selectedTrip = trip;
             $(this.$refs.driveModal.$el).modal('show');
-        }
+        },
     },
 
     components: {
+        "trip-status": require("./TripStatus.vue").default,
         "drive-modal": require("./DriveModal.vue").default,
     },
 }

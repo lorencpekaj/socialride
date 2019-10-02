@@ -2013,6 +2013,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2042,6 +2046,7 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
     }
   },
   components: {
+    "trip-status": __webpack_require__(/*! ./TripStatus.vue */ "./resources/js/components/TripStatus.vue")["default"],
     "drive-modal": __webpack_require__(/*! ./DriveModal.vue */ "./resources/js/components/DriveModal.vue")["default"]
   }
 });
@@ -2219,6 +2224,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     requestRide: function requestRide() {
+      var _this = this;
+
       axios.post('/trip/request_pickup', {
         'distance': this.distance.value,
         'duration': this.duration.value,
@@ -2232,6 +2239,8 @@ __webpack_require__.r(__webpack_exports__);
           'lng': this.end_location.lng(),
           'address': this.end_address
         }
+      }).then(function () {
+        return $(_this.$el).modal('hide');
       })["catch"](function (error) {
         var response = error.response.data;
 
@@ -2239,6 +2248,63 @@ __webpack_require__.r(__webpack_exports__);
           window.alert(response.errors);
         }
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TripStatus.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TripStatus.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  computed: {
+    trip: function trip() {
+      return this.$root.userTrip;
+    },
+    isDriver: function isDriver() {
+      return this.$root.user && this.$root.user.id === this.trip.driver_id;
+    }
+  },
+  methods: {
+    cancelTrip: function cancelTrip() {
+      axios["delete"]('/trip/' + this.trip.id);
     }
   }
 });
@@ -56252,121 +56318,138 @@ var render = function() {
       _c("div", { staticClass: "pending-riders-wrap" }, [
         _c("div", { staticClass: "container" }, [
           _c("div", { staticClass: "row justify-content-center" }, [
-            _c("div", { staticClass: "col-md-8" }, [
-              _c("div", { staticClass: "card card-passengers" }, [
-                _c("div", { staticClass: "card-header" }, [
-                  _vm._v(
-                    "\n                            Passengers awaiting for a driver\n                            "
-                  ),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary btn-sm float-right",
-                      attrs: { type: "button" },
-                      on: {
-                        click: function($event) {
-                          _vm.driving = !_vm.driving
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                                " +
-                          _vm._s(_vm.driving ? "Hide All" : "Show All") +
-                          "\n                            "
-                      )
-                    ]
-                  )
-                ]),
+            _c(
+              "div",
+              { staticClass: "col-md-8" },
+              [
+                _c("trip-status"),
                 _vm._v(" "),
-                _vm.driving
-                  ? _c(
-                      "ul",
-                      { staticClass: "list-group list-group-passengers" },
-                      _vm._l(_vm.trips, function(trip) {
-                        return _c(
-                          "a",
+                _vm.trips.length
+                  ? _c("div", { staticClass: "card card-passengers" }, [
+                      _c("div", { staticClass: "card-header" }, [
+                        _vm._v(
+                          "\n                            Passengers awaiting for a driver\n                            "
+                        ),
+                        _c(
+                          "button",
                           {
-                            key: trip.id,
-                            staticClass:
-                              "list-group-item list-group-item-action flex-column align-items-start",
-                            attrs: { href: "#" },
+                            staticClass: "btn btn-primary btn-sm float-right",
+                            attrs: { type: "button" },
                             on: {
                               click: function($event) {
-                                return _vm.selectTrip(trip)
+                                _vm.driving = !_vm.driving
                               }
                             }
                           },
                           [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "d-flex w-100 justify-content-between"
-                              },
-                              [
-                                _c("h5", { staticClass: "mb-1" }, [
-                                  _vm._v(
-                                    _vm._s(trip.passenger.name) +
-                                      " needs a driver!"
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("div", [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.driving ? "Hide All" : "Show All") +
+                                "\n                            "
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _vm.driving
+                        ? _c(
+                            "ul",
+                            { staticClass: "list-group list-group-passengers" },
+                            _vm._l(_vm.trips, function(trip) {
+                              return _c(
+                                "a",
+                                {
+                                  key: trip.id,
+                                  staticClass:
+                                    "list-group-item list-group-item-action flex-column align-items-start",
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.selectTrip(trip)
+                                    }
+                                  }
+                                },
+                                [
                                   _c(
-                                    "span",
-                                    { staticClass: "badge badge-secondary" },
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "d-flex w-100 justify-content-between"
+                                    },
                                     [
-                                      _vm._v(
-                                        "\n                                            " +
-                                          _vm._s(
-                                            _vm.distanceFormat(trip.distance)
-                                          ) +
-                                          "\n                                        "
-                                      )
+                                      _c("h5", { staticClass: "mb-1" }, [
+                                        _vm._v(
+                                          _vm._s(trip.passenger.name) +
+                                            " needs a driver!"
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("div", [
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-secondary"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                            " +
+                                                _vm._s(
+                                                  _vm.distanceFormat(
+                                                    trip.distance
+                                                  )
+                                                ) +
+                                                "\n                                        "
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "span",
+                                          {
+                                            staticClass: "badge badge-warning"
+                                          },
+                                          [
+                                            _vm._v(
+                                              "\n                                            " +
+                                                _vm._s(
+                                                  _vm.durationFormat(
+                                                    trip.duration
+                                                  )
+                                                ) +
+                                                "\n                                        "
+                                            )
+                                          ]
+                                        )
+                                      ])
                                     ]
                                   ),
                                   _vm._v(" "),
-                                  _c(
-                                    "span",
-                                    { staticClass: "badge badge-warning" },
-                                    [
-                                      _vm._v(
-                                        "\n                                            " +
-                                          _vm._s(
-                                            _vm.durationFormat(trip.duration)
-                                          ) +
-                                          "\n                                        "
-                                      )
-                                    ]
-                                  )
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("p", { staticClass: "mb-0 small" }, [
-                              _vm._v(
-                                "\n                                    Pickup: " +
-                                  _vm._s(trip.pick_up.address) +
-                                  "\n                                "
+                                  _c("p", { staticClass: "mb-0 small" }, [
+                                    _vm._v(
+                                      "\n                                    Pickup: " +
+                                        _vm._s(trip.pick_up.address) +
+                                        "\n                                "
+                                    )
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("p", { staticClass: "mb-0 small" }, [
+                                    _vm._v(
+                                      "\n                                    Destination: " +
+                                        _vm._s(trip.drop_off.address) +
+                                        "\n                                "
+                                    )
+                                  ])
+                                ]
                               )
-                            ]),
-                            _vm._v(" "),
-                            _c("p", { staticClass: "mb-0 small" }, [
-                              _vm._v(
-                                "\n                                    Destination: " +
-                                  _vm._s(trip.drop_off.address) +
-                                  "\n                                "
-                              )
-                            ])
-                          ]
-                        )
-                      }),
-                      0
-                    )
+                            }),
+                            0
+                          )
+                        : _vm._e()
+                    ])
                   : _vm._e()
-              ])
-            ])
+              ],
+              1
+            )
           ])
         ])
       ]),
@@ -56401,33 +56484,38 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "location-search" },
-    [
-      _c("gmap-autocomplete", {
-        staticClass: "form-control form-control-lg",
-        attrs: {
-          options: {
-            componentRestrictions: { country: "au" }
-          }
-        },
-        on: { place_changed: _vm.setPlace }
-      }),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-lg btn-primary", on: { click: _vm.addMarker } },
-        [_vm._v("\n        Request Pickup\n    ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "trip-modal",
-        _vm._b({ ref: "tripInfo" }, "trip-modal", _vm.tripData, false)
+  return this.$root.userTrip === null
+    ? _c(
+        "div",
+        { staticClass: "location-search" },
+        [
+          _c("gmap-autocomplete", {
+            staticClass: "form-control form-control-lg",
+            attrs: {
+              options: {
+                componentRestrictions: { country: "au" }
+              }
+            },
+            on: { place_changed: _vm.setPlace }
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-lg btn-primary",
+              on: { click: _vm.addMarker }
+            },
+            [_vm._v("\n        Request Pickup\n    ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "trip-modal",
+            _vm._b({ ref: "tripInfo" }, "trip-modal", _vm.tripData, false)
+          )
+        ],
+        1
       )
-    ],
-    1
-  )
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -56542,6 +56630,71 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TripStatus.vue?vue&type=template&id=28014cbc&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TripStatus.vue?vue&type=template&id=28014cbc& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.trip !== null
+    ? _c("div", { staticClass: "card card-directions" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _vm.isDriver
+            ? _c("span", [
+                _vm._v(
+                  "\n            You are driving " +
+                    _vm._s(_vm.trip.passenger_name) +
+                    "\n        "
+                )
+              ])
+            : _vm.trip.driver_id === null
+            ? _c("span", [
+                _vm._v(
+                  "\n            You are waiting for a driver...\n            "
+                ),
+                _c("span", { staticClass: "float-right" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-sm btn-danger",
+                      attrs: { href: "#" },
+                      on: { click: _vm.cancelTrip }
+                    },
+                    [_vm._v("\n                    Cancel\n                ")]
+                  )
+                ])
+              ])
+            : _c("span", [
+                _vm._v(
+                  "\n            You are being driven by " +
+                    _vm._s(_vm.trip.driver_name) +
+                    "\n        "
+                )
+              ])
+        ]),
+        _vm._v(" "),
+        _vm.trip.driver_id !== null
+          ? _c("div", { ref: "directionsRef", staticClass: "card-body" })
+          : _vm._e()
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -71285,6 +71438,7 @@ var app = new Vue({
       lat: 0,
       lng: 0
     },
+    userTrip: null,
     userDestinationLocation: {
       lat: 0,
       lng: 0
@@ -71335,7 +71489,15 @@ var app = new Vue({
 
       axios.get('/trip/available').then(function (_ref) {
         var data = _ref.data;
-        _this3.availableTrips = data.data;
+        var currentTrip = data.data.current_trip;
+
+        if (currentTrip) {
+          _this3.userTrip = currentTrip;
+          _this3.availableTrips = [];
+        } else {
+          _this3.userTrip = null;
+          _this3.availableTrips = data.data;
+        }
       });
     }
   },
@@ -71733,6 +71895,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TripModal_vue_vue_type_template_id_ce29e8a6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TripModal_vue_vue_type_template_id_ce29e8a6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/TripStatus.vue":
+/*!************************************************!*\
+  !*** ./resources/js/components/TripStatus.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TripStatus_vue_vue_type_template_id_28014cbc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TripStatus.vue?vue&type=template&id=28014cbc& */ "./resources/js/components/TripStatus.vue?vue&type=template&id=28014cbc&");
+/* harmony import */ var _TripStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TripStatus.vue?vue&type=script&lang=js& */ "./resources/js/components/TripStatus.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TripStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TripStatus_vue_vue_type_template_id_28014cbc___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TripStatus_vue_vue_type_template_id_28014cbc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TripStatus.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TripStatus.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/TripStatus.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TripStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TripStatus.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TripStatus.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TripStatus_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/TripStatus.vue?vue&type=template&id=28014cbc&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/TripStatus.vue?vue&type=template&id=28014cbc& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TripStatus_vue_vue_type_template_id_28014cbc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TripStatus.vue?vue&type=template&id=28014cbc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TripStatus.vue?vue&type=template&id=28014cbc&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TripStatus_vue_vue_type_template_id_28014cbc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TripStatus_vue_vue_type_template_id_28014cbc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

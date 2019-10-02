@@ -40,4 +40,12 @@ class Trip extends Model
     {
         return $this->hasOne('App\User', 'id', 'passenger_id');
     }
+
+    /**
+     * Return the passenger of the trip
+     */
+    public function driver()
+    {
+        return $this->hasOne('App\User', 'id', 'driver_id');
+    }
 }

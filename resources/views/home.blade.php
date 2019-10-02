@@ -24,5 +24,6 @@
     </div>
 </div>
 
+<!-- show pending trips -->
 <pending-riders></pending-riders>
 @endsection

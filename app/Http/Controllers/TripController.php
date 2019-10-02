@@ -83,6 +83,28 @@ class TripController extends Controller
      */
     public function availableTrips()
     {
+        // check if the user is currently in a trip
+        $currentUser = \Auth::user();
+        $existingTrip = Trip::where('driver_id', $currentUser->id)
+            ->orWhere('passenger_id', $currentUser->id)
+            ->with(['pickUp', 'dropOff', 'driver', 'passenger'])
+            ->first();
+
+        if ($existingTrip) {
+            return $this->success([
+                'current_trip' => [
+                    'id' => $existingTrip->id,
+                    'passenger_id' => $existingTrip->passenger_id,
+                    'passenger_name' => $existingTrip->passenger->name,
+                    'driver_id' => $existingTrip->driver_id,
+                    'driver_name' => $existingTrip->driver->name ?? '',
+                    'pick_up' => $existingTrip->pickUp->only(['lat', 'lng']),
+                    'drop_off' => $existingTrip->dropOff->only(['lat', 'lng']),
+                ]
+            ]);
+        }
+
+        // otherwise just show all trips
         $trips = Trip::with(['pickUp', 'dropOff', 'passenger'])
             ->whereNull('driver_id')
             ->get()
@@ -101,5 +123,21 @@ class TripController extends Controller
             })
             ->toArray();
         return $this->success($trips);
+    }
+
+    /**
+     * Delete a trip
+     *
+     * @param  App\Trip $trip
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Trip $trip, Request $request)
+    {
+        if ($trip->delete()) {
+            return $this->success($trip->only('id'));
+        } else {
+            return $this->error('Unable to remove resource');
+        }
     }
 }
