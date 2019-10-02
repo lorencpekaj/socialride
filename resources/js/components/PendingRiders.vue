@@ -15,7 +15,7 @@
             <a  href="#"
                 class="list-group-item list-group-item-action flex-column align-items-start"
                 v-for="trip in trips"
-                :key="trip"
+                :key="trip.id"
             >
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{ trip.passenger.name }} needs a driver!</h5>

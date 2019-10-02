@@ -38475,7 +38475,7 @@ var render = function() {
             return _c(
               "a",
               {
-                key: trip,
+                key: trip.id,
                 staticClass:
                   "list-group-item list-group-item-action flex-column align-items-start",
                 attrs: { href: "#" }
