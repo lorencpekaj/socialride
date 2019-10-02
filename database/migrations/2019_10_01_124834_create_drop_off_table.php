@@ -19,6 +19,7 @@ class CreateDropOffTable extends Migration
             $table->foreign('trip_id')->references('id')->on('trips');
             $table->float('lat', 14, 7);
             $table->float('lng', 14, 7);
+            $table->string('address')->nullable();
         });
     }
 
