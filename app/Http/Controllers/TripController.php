@@ -31,6 +31,8 @@ class TripController extends Controller
 
         $trip = new Trip;
         $trip->passenger_id = $user->id;
+        $trip->distance = $request->input('distance');
+        $trip->duration = $request->input('duration');
         $trip->driver_id = null;
         if ($trip->save()) {
             $trip->pickUp()->create([
@@ -58,17 +60,22 @@ class TripController extends Controller
      */
     public function availableTrips()
     {
-        $trips = Trip::with(['pickUp', 'dropOff'])
+        $trips = Trip::with(['pickUp', 'dropOff', 'passenger'])
             ->whereNull('driver_id')
             ->get()
-            ->each(function ($trip) {
-                $trip->pickUp->makeHidden(['id', 'trip_id']);
-                $trip->dropOff->makeHidden(['id', 'trip_id']);
+            ->map(function ($trip) {
+                return [
+                    'id' => $trip->id,
+                    'passenger' => [
+                        'id' => $trip->passenger->id,
+                        'name' => $trip->passenger->name,
+                    ],
+                    'duration' => $trip->duration,
+                    'distance' => $trip->distance,
+                    'pick_up' => $trip->pickUp->only(['lat', 'lng', 'address']),
+                    'drop_off' => $trip->dropOff->only(['lat', 'lng', 'address']),
+                ];
             })
-            ->makeHidden([
-                'driver_id',
-                'updated_at'
-            ])
             ->toArray();
         return $this->success($trips);
     }

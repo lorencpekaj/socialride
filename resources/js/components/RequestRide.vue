@@ -2,7 +2,11 @@
     <div class="location-search">
         <gmap-autocomplete
             @place_changed="setPlace"
-            class="form-control form-control-lg">
+            class="form-control form-control-lg"
+            :options="{
+                componentRestrictions: {country: 'au'}
+            }"
+        >
         </gmap-autocomplete>
         <button
             @click="addMarker"

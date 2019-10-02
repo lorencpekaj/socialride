@@ -1920,11 +1920,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       driving: true
     };
+  },
+  computed: {
+    trips: function trips() {
+      return this.$root.availableTrips;
+    }
+  },
+  methods: {
+    distanceFormat: function distanceFormat(distance) {
+      return (distance / 1000).toFixed(1) + ' km';
+    }
   }
 });
 
@@ -1939,6 +1953,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -2098,6 +2116,8 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     requestRide: function requestRide() {
       axios.post('/trip/request_pickup', {
+        'distance': this.distance.value,
+        'duration': this.duration.value,
         'pick_up': {
           'lat': this.start_location.lat(),
           'lng': this.start_location.lng(),
@@ -38448,50 +38468,55 @@ var render = function() {
     ]),
     _vm._v(" "),
     _vm.driving
-      ? _c("ul", { staticClass: "list-group list-group-passengers" }, [
-          _vm._m(0)
-        ])
+      ? _c(
+          "ul",
+          { staticClass: "list-group list-group-passengers" },
+          _vm._l(_vm.trips, function(trip) {
+            return _c(
+              "a",
+              {
+                key: trip,
+                staticClass:
+                  "list-group-item list-group-item-action flex-column align-items-start",
+                attrs: { href: "#" }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "d-flex w-100 justify-content-between" },
+                  [
+                    _c("h5", { staticClass: "mb-1" }, [
+                      _vm._v(_vm._s(trip.passenger.name) + " needs a driver!")
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("span", { staticClass: "badge badge-secondary" }, [
+                        _vm._v(_vm._s(_vm.distanceFormat(trip.distance)))
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "badge badge-warning" }, [
+                        _vm._v("3 minutes")
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("p", { staticClass: "mb-0 small" }, [
+                  _vm._v("Pickup: " + _vm._s(trip.pick_up.address))
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "mb-0 small" }, [
+                  _vm._v("Destination: " + _vm._s(trip.drop_off.address))
+                ])
+              ]
+            )
+          }),
+          0
+        )
       : _vm._e()
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass:
-          "list-group-item list-group-item-action flex-column align-items-start",
-        attrs: { href: "#" }
-      },
-      [
-        _c("div", { staticClass: "d-flex w-100 justify-content-between" }, [
-          _c("h5", { staticClass: "mb-1" }, [_vm._v("Lorenc needs a driver!")]),
-          _vm._v(" "),
-          _c("div", [
-            _c("span", { staticClass: "badge badge-secondary" }, [
-              _vm._v("3.5 km")
-            ]),
-            _vm._v(" "),
-            _c("span", { staticClass: "badge badge-warning" }, [
-              _vm._v("3 minutes")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "mb-0 small" }, [
-          _vm._v("Pickup: 12 Waltham Pl, Richmond VIC 3121, Australia")
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "mb-0 small" }, [
-          _vm._v("Destination: 12 Waltham Pl, Richmond VIC 3121, Australia")
-        ])
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38519,6 +38544,11 @@ var render = function() {
     [
       _c("gmap-autocomplete", {
         staticClass: "form-control form-control-lg",
+        attrs: {
+          options: {
+            componentRestrictions: { country: "au" }
+          }
+        },
         on: { place_changed: _vm.setPlace }
       }),
       _vm._v(" "),
@@ -53397,15 +53427,20 @@ var app = new Vue({
       lng: 0
     },
     carMarkerTimer: null,
-    carMarkers: []
+    carMarkers: [],
+    availableTripsTimer: [],
+    availableTrips: []
   },
   created: function created() {
     // every 10 seconds the user location will update
-    this.carMarkerTimer = setInterval(this.carMarkerUpdate, 10000);
+    this.carMarkerTimer = setInterval(this.carMarkerUpdate, 10000); // ping the awaiting passengers every 1 second
+
+    this.availableTripsTimer = setInterval(this.getAvailableTrips, 1000);
   },
   mounted: function mounted() {
     this.fetchUser();
     this.carMarkerUpdate();
+    this.getAvailableTrips();
   },
   methods: {
     // store user object in the user
@@ -53429,6 +53464,15 @@ var app = new Vue({
             }
           };
         });
+      });
+    },
+    // get all the available trips
+    getAvailableTrips: function getAvailableTrips() {
+      var _this3 = this;
+
+      axios.get('/trip/available').then(function (_ref) {
+        var data = _ref.data;
+        _this3.availableTrips = data.data;
       });
     }
   },

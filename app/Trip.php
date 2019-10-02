@@ -23,4 +23,12 @@ class Trip extends Model
     {
         return $this->hasOne('App\DropOff');
     }
+
+    /**
+     * Return the passenger of the trip
+     */
+    public function passenger()
+    {
+        return $this->hasOne('App\User', 'id', 'passenger_id');
+    }
 }

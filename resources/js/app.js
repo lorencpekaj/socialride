@@ -51,17 +51,23 @@ const app = new Vue({
             lng: 0
         },
         carMarkerTimer: null,
-        carMarkers: []
+        carMarkers: [],
+        availableTripsTimer: [],
+        availableTrips: [],
     },
 
     created: function () {
         // every 10 seconds the user location will update
         this.carMarkerTimer = setInterval(this.carMarkerUpdate, 10000);
+
+        // ping the awaiting passengers every 1 second
+        this.availableTripsTimer = setInterval(this.getAvailableTrips, 1000);
     },
 
     mounted: function () {
         this.fetchUser();
         this.carMarkerUpdate();
+        this.getAvailableTrips();
     },
 
     methods: {
@@ -84,7 +90,16 @@ const app = new Vue({
                     };
                 });
             });
-        }
+        },
+
+        // get all the available trips
+        getAvailableTrips: function () {
+            axios
+                .get('/trip/available')
+                .then(({ data }) => {
+                    this.availableTrips = data.data;
+                });
+        },
     },
 
     components: {

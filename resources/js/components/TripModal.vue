@@ -56,6 +56,8 @@ export default {
         requestRide: function () {
             axios
                 .post('/trip/request_pickup', {
+                    'distance': this.distance.value,
+                    'duration': this.duration.value,
                     'pick_up': {
                         'lat': this.start_location.lat(),
                         'lng': this.start_location.lng(),

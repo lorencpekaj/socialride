@@ -12,16 +12,20 @@
         </div>
 
         <ul class="list-group list-group-passengers" v-if="driving">
-            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+            <a  href="#"
+                class="list-group-item list-group-item-action flex-column align-items-start"
+                v-for="trip in trips"
+                :key="trip"
+            >
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Lorenc needs a driver!</h5>
+                    <h5 class="mb-1">{{ trip.passenger.name }} needs a driver!</h5>
                     <div>
-                        <span class="badge badge-secondary">3.5 km</span>
+                        <span class="badge badge-secondary">{{ distanceFormat(trip.distance) }}</span>
                         <span class="badge badge-warning">3 minutes</span>
                     </div>
                 </div>
-                <p class="mb-0 small">Pickup: 12 Waltham Pl, Richmond VIC 3121, Australia</p>
-                <p class="mb-0 small">Destination: 12 Waltham Pl, Richmond VIC 3121, Australia</p>
+                <p class="mb-0 small">Pickup: {{ trip.pick_up.address }}</p>
+                <p class="mb-0 small">Destination: {{ trip.drop_off.address }}</p>
             </a>
         </ul>
     </div>
@@ -31,8 +35,20 @@
 export default {
     data() {
         return {
-            driving: true
+            driving: true,
         }
-    }
+    },
+
+    computed: {
+        trips() {
+            return this.$root.availableTrips;
+        },
+    },
+
+    methods: {
+        distanceFormat(distance) {
+            return (distance / 1000).toFixed(1) + ' km';
+        },
+    },
 }
 </script>

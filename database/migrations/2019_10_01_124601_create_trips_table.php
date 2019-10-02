@@ -19,6 +19,8 @@ class CreateTripsTable extends Migration
             $table->foreign('passenger_id')->references('id')->on('users');
             $table->unsignedBigInteger('driver_id')->nullable();
             $table->foreign('driver_id')->references('id')->on('users');
+            $table->unsignedInteger('distance');
+            $table->unsignedInteger('duration');
             $table->timestamps();
         });
     }
