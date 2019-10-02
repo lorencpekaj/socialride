@@ -6,25 +6,32 @@
             </span>
             <span v-else-if="trip.driver_id === null">
                 You are waiting for a driver...
-                <span class="float-right">
-                    <a
-                        href="#"
-                        class="btn btn-sm btn-danger"
-                        @click="cancelTrip"
-                    >
-                        Cancel
-                    </a>
-                </span>
             </span>
             <span v-else>
                 You are being driven by {{ trip.driver_name }}
+            </span>
+
+            <span class="float-right">
+                <a
+                    href="#"
+                    class="btn btn-sm btn-danger"
+                    @click="cancelTrip"
+                >
+                    Cancel
+                </a>
             </span>
         </div>
         <div
             class="card-body"
             ref="directionsRef"
-            v-if="trip.driver_id !== null"
-        ></div>
+            v-if="isDriver"
+        >
+            <button
+                class="btn btn-block btn-success"
+            >
+                Complete Trip
+            </button>
+        </div>
     </div>
 </template>
 

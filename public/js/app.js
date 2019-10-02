@@ -2293,6 +2293,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     trip: function trip() {
@@ -56665,19 +56672,8 @@ var render = function() {
             : _vm.trip.driver_id === null
             ? _c("span", [
                 _vm._v(
-                  "\n            You are waiting for a driver...\n            "
-                ),
-                _c("span", { staticClass: "float-right" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-sm btn-danger",
-                      attrs: { href: "#" },
-                      on: { click: _vm.cancelTrip }
-                    },
-                    [_vm._v("\n                    Cancel\n                ")]
-                  )
-                ])
+                  "\n            You are waiting for a driver...\n        "
+                )
               ])
             : _c("span", [
                 _vm._v(
@@ -56685,11 +56681,27 @@ var render = function() {
                     _vm._s(_vm.trip.driver_name) +
                     "\n        "
                 )
-              ])
+              ]),
+          _vm._v(" "),
+          _c("span", { staticClass: "float-right" }, [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-sm btn-danger",
+                attrs: { href: "#" },
+                on: { click: _vm.cancelTrip }
+              },
+              [_vm._v("\n                Cancel\n            ")]
+            )
+          ])
         ]),
         _vm._v(" "),
-        _vm.trip.driver_id !== null
-          ? _c("div", { ref: "directionsRef", staticClass: "card-body" })
+        _vm.isDriver
+          ? _c("div", { ref: "directionsRef", staticClass: "card-body" }, [
+              _c("button", { staticClass: "btn btn-block btn-success" }, [
+                _vm._v("\n            Complete Trip\n        ")
+              ])
+            ])
           : _vm._e()
       ])
     : _vm._e()
