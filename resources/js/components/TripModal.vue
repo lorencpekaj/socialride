@@ -54,17 +54,25 @@ export default {
 
     methods: {
         requestRide: function () {
-            const start_position = {
-                'lat': this.start_location.lat(),
-                'lng': this.start_location.lng(),
-            };
-
-            const end_position = {
-                'lat': this.end_location.lat(),
-                'lng': this.end_location.lng(),
-            };
-
-            console.log(start_position, end_position);
+            axios
+                .post('/trip/request_pickup', {
+                    'pick_up': {
+                        'lat': this.start_location.lat(),
+                        'lng': this.start_location.lng(),
+                        'address': this.start_address,
+                    },
+                    'drop_off': {
+                        'lat': this.end_location.lat(),
+                        'lng': this.end_location.lng(),
+                        'address': this.end_address,
+                    }
+                })
+                .catch((error) => {
+                    const response = error.response.data;
+                    if (response.success === false) {
+                        window.alert(response.errors);
+                    }
+                });
         }
     }
 }

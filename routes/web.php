@@ -32,5 +32,13 @@ Route::emailVerification();
 // User location
 Route::resource('user_location', 'UserLocationController');
 
+// Trip
+Route::prefix('trip')
+    ->middleware('auth')
+    ->group(function () {
+        Route::post('/request_pickup', 'TripController@requestPickup');
+        Route::get('/available', 'TripController@availableTrips');
+    });
+
 // Homepage
 Route::get('/', 'HomeController@index')->middleware('auth')->name('home');

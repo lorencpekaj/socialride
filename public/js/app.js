@@ -2049,15 +2049,24 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     requestRide: function requestRide() {
-      var start_position = {
-        'lat': this.start_location.lat(),
-        'lng': this.start_location.lng()
-      };
-      var end_position = {
-        'lat': this.end_location.lat(),
-        'lng': this.end_location.lng()
-      };
-      console.log(start_position, end_position);
+      axios.post('/trip/request_pickup', {
+        'pick_up': {
+          'lat': this.start_location.lat(),
+          'lng': this.start_location.lng(),
+          'address': this.start_address
+        },
+        'drop_off': {
+          'lat': this.end_location.lat(),
+          'lng': this.end_location.lng(),
+          'address': this.end_address
+        }
+      })["catch"](function (error) {
+        var response = error.response.data;
+
+        if (response.success === false) {
+          window.alert(response.errors);
+        }
+      });
     }
   }
 });
@@ -53563,8 +53572,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\socialride\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\socialride\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
