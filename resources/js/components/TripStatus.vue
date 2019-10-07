@@ -14,23 +14,19 @@
             <span class="float-right">
                 <a
                     href="#"
+                    class="btn btn-sm btn-success"
+                    @click="cancelTrip"
+                >
+                    Complete Trip
+                </a>
+                <a
+                    href="#"
                     class="btn btn-sm btn-danger"
                     @click="cancelTrip"
                 >
                     Cancel
                 </a>
             </span>
-        </div>
-        <div
-            class="card-body"
-            ref="directionsRef"
-            v-if="isDriver"
-        >
-            <button
-                class="btn btn-block btn-success"
-            >
-                Complete Trip
-            </button>
         </div>
     </div>
 </template>

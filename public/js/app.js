@@ -2278,10 +2278,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: {
     trip: function trip() {
@@ -56675,6 +56671,16 @@ var render = function() {
             _c(
               "a",
               {
+                staticClass: "btn btn-sm btn-success",
+                attrs: { href: "#" },
+                on: { click: _vm.cancelTrip }
+              },
+              [_vm._v("\n                Complete Trip\n            ")]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
                 staticClass: "btn btn-sm btn-danger",
                 attrs: { href: "#" },
                 on: { click: _vm.cancelTrip }
@@ -56682,15 +56688,7 @@ var render = function() {
               [_vm._v("\n                Cancel\n            ")]
             )
           ])
-        ]),
-        _vm._v(" "),
-        _vm.isDriver
-          ? _c("div", { ref: "directionsRef", staticClass: "card-body" }, [
-              _c("button", { staticClass: "btn btn-block btn-success" }, [
-                _vm._v("\n            Complete Trip\n        ")
-              ])
-            ])
-          : _vm._e()
+        ])
       ])
     : _vm._e()
 }
