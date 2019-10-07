@@ -8,6 +8,7 @@ env_variables:
   # Put production environment variables here.
   APP_LOG: errorlog
   APP_KEY:
+  SESSION_DRIVER: cookie
   # aws
   DB_HOST:
   DB_DATABASE:
