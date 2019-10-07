@@ -50,6 +50,7 @@ export default {
 
     methods: {
         cancelTrip: function () {
+            this.$root.clearDirections();
             axios.delete('/trip/' + this.trip.id);
         }
     }

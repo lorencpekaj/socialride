@@ -49,9 +49,6 @@ export default {
         setPlace(place) {
             this.currentPlace = place;
         },
-        setTripData(data) {
-            this.tripData = data;
-        },
         addMarker() {
             if (this.currentPlace) {
                 const marker = {
@@ -59,26 +56,15 @@ export default {
                     lng: this.currentPlace.geometry.location.lng()
                 };
 
-                // clear existing directions
-                this.$root.clearDirections();
-                this.$root.directionsDisplay = new google.maps.DirectionsRenderer;
-                this.$root.directionsDisplay.setMap(this.$root.mapRef.$mapObject);
-
-                const directionsService = new google.maps.DirectionsService;
-                directionsService.route({
-                    origin: this.$root.userLocation,
-                    destination: marker,
-                    travelMode: 'DRIVING'
-                },
-                (response, status) => {
-                    if (status === 'OK') {
-                        this.$root.directionsDisplay.setDirections(response);
-                        this.setTripData(response.routes[0].legs[0]);
+                this.$root.setDirections(
+                    this.$root.userLocation,
+                    marker,
+                    null,
+                    (response) => {
+                        this.tripData = response.routes[0].legs[0];
                         $(this.$refs.tripInfo.$el).modal('show');
-                    } else {
-                        window.alert('Directions request failed due to ' + status);
                     }
-                });
+                );
 
                 this.$root.userDestinationLocation = marker;
                 this.currentPlace = null;

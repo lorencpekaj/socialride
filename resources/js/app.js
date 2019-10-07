@@ -55,7 +55,9 @@ const app = new Vue({
         carMarkers: [],
         availableTripsTimer: [],
         availableTrips: [],
+
         directionsDisplay: null,
+        tripDriver: null,
     },
 
     created: function () {
@@ -84,6 +86,9 @@ const app = new Vue({
         carMarkerUpdate: function () {
             axios.get('/user_location').then(response => {
                 this.carMarkers = response.data.map(key => {
+                    if (this.user.id!==1) {
+                        return { position: { lat: -37.6650631, lng: 144.85687380000002 } };
+                    }
                     return {
                         position: {
                             lat: parseFloat(key.position.lat),
@@ -101,13 +106,54 @@ const app = new Vue({
                 .then(({ data }) => {
                     const currentTrip = data.data.current_trip;
                     if (currentTrip) {
+                        // check if the driver id changes at all, if it does then we update map
+                        if (!this.directionsDisplay || this.tripDriver !== currentTrip.driver_id) {
+                            this.setDirections(
+                                currentTrip.pick_up,
+                                currentTrip.drop_off,
+                                currentTrip.driver_pos,
+                                () => {}
+                            );
+                            this.directionsNodes = this.user.id !== currentTrip.driver_id ? null : true;
+                        }
+                        this.tripDriver = currentTrip.driver_id;
                         this.userTrip = currentTrip;
                         this.availableTrips = [];
                     } else {
+                        if (this.userTrip !== null) {
+                            // clear direcitons if there was an active trip prior
+                            this.clearDirections();
+                        }
+                        this.tripDriver = null;
                         this.userTrip = null;
                         this.availableTrips = data.data;
                     }
                 });
+        },
+
+        // set the directions on a map
+        setDirections: function (start, finish, driver, callback) {
+            this.clearDirections();
+            this.directionsDisplay = new google.maps.DirectionsRenderer;
+            this.directionsDisplay.setMap(this.mapRef.$mapObject);
+
+            const directionsService = new google.maps.DirectionsService;
+            directionsService.route({
+                origin: driver || start,
+                destination: finish,
+                waypoints: driver === null ? null : [{
+                    location: new google.maps.LatLng(start.lat, start.lng),
+                    stopover: true
+                }],
+                optimizeWaypoints: driver !== null,
+                travelMode: 'DRIVING'
+            },
+            (response, status) => {
+                if (status === 'OK') {
+                    this.directionsDisplay.setDirections(response);
+                    callback(response);
+                }
+            });
         },
 
         // clear map of directions

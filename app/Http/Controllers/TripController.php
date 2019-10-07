@@ -98,6 +98,7 @@ class TripController extends Controller
                     'passenger_name' => $existingTrip->passenger->name,
                     'driver_id' => $existingTrip->driver_id,
                     'driver_name' => $existingTrip->driver->name ?? '',
+                    'driver_pos' => $existingTrip->driver->locations->first()->only(['lat', 'lng']),
                     'pick_up' => $existingTrip->pickUp->only(['lat', 'lng']),
                     'drop_off' => $existingTrip->dropOff->only(['lat', 'lng']),
                 ]

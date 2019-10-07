@@ -2107,9 +2107,6 @@ __webpack_require__.r(__webpack_exports__);
     setPlace: function setPlace(place) {
       this.currentPlace = place;
     },
-    setTripData: function setTripData(data) {
-      this.tripData = data;
-    },
     addMarker: function addMarker() {
       var _this = this;
 
@@ -2117,26 +2114,10 @@ __webpack_require__.r(__webpack_exports__);
         var marker = {
           lat: this.currentPlace.geometry.location.lat(),
           lng: this.currentPlace.geometry.location.lng()
-        }; // clear existing directions
-
-        this.$root.clearDirections();
-        this.$root.directionsDisplay = new google.maps.DirectionsRenderer();
-        this.$root.directionsDisplay.setMap(this.$root.mapRef.$mapObject);
-        var directionsService = new google.maps.DirectionsService();
-        directionsService.route({
-          origin: this.$root.userLocation,
-          destination: marker,
-          travelMode: 'DRIVING'
-        }, function (response, status) {
-          if (status === 'OK') {
-            _this.$root.directionsDisplay.setDirections(response);
-
-            _this.setTripData(response.routes[0].legs[0]);
-
-            $(_this.$refs.tripInfo.$el).modal('show');
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
+        };
+        this.$root.setDirections(this.$root.userLocation, marker, null, function (response) {
+          _this.tripData = response.routes[0].legs[0];
+          $(_this.$refs.tripInfo.$el).modal('show');
         });
         this.$root.userDestinationLocation = marker;
         this.currentPlace = null;
@@ -2312,6 +2293,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     cancelTrip: function cancelTrip() {
+      this.$root.clearDirections();
       axios["delete"]('/trip/' + this.trip.id);
     }
   }
@@ -71465,7 +71447,8 @@ var app = new Vue({
     carMarkers: [],
     availableTripsTimer: [],
     availableTrips: [],
-    directionsDisplay: null
+    directionsDisplay: null,
+    tripDriver: null
   },
   created: function created() {
     // every 10 seconds the user location will update
@@ -71493,6 +71476,15 @@ var app = new Vue({
 
       axios.get('/user_location').then(function (response) {
         _this2.carMarkers = response.data.map(function (key) {
+          if (_this2.user.id !== 1) {
+            return {
+              position: {
+                lat: -37.6650631,
+                lng: 144.85687380000002
+              }
+            };
+          }
+
           return {
             position: {
               lat: parseFloat(key.position.lat),
@@ -71511,11 +71503,50 @@ var app = new Vue({
         var currentTrip = data.data.current_trip;
 
         if (currentTrip) {
+          // check if the driver id changes at all, if it does then we update map
+          if (!_this3.directionsDisplay || _this3.tripDriver !== currentTrip.driver_id) {
+            _this3.setDirections(currentTrip.pick_up, currentTrip.drop_off, currentTrip.driver_pos, function () {});
+
+            _this3.directionsNodes = _this3.user.id !== currentTrip.driver_id ? null : true;
+          }
+
+          _this3.tripDriver = currentTrip.driver_id;
           _this3.userTrip = currentTrip;
           _this3.availableTrips = [];
         } else {
+          if (_this3.userTrip !== null) {
+            // clear direcitons if there was an active trip prior
+            _this3.clearDirections();
+          }
+
+          _this3.tripDriver = null;
           _this3.userTrip = null;
           _this3.availableTrips = data.data;
+        }
+      });
+    },
+    // set the directions on a map
+    setDirections: function setDirections(start, finish, driver, callback) {
+      var _this4 = this;
+
+      this.clearDirections();
+      this.directionsDisplay = new google.maps.DirectionsRenderer();
+      this.directionsDisplay.setMap(this.mapRef.$mapObject);
+      var directionsService = new google.maps.DirectionsService();
+      directionsService.route({
+        origin: driver || start,
+        destination: finish,
+        waypoints: driver === null ? null : [{
+          location: new google.maps.LatLng(start.lat, start.lng),
+          stopover: true
+        }],
+        optimizeWaypoints: driver !== null,
+        travelMode: 'DRIVING'
+      }, function (response, status) {
+        if (status === 'OK') {
+          _this4.directionsDisplay.setDirections(response);
+
+          callback(response);
         }
       });
     },
