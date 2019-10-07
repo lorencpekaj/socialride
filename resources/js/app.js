@@ -86,9 +86,6 @@ const app = new Vue({
         carMarkerUpdate: function () {
             axios.get('/user_location').then(response => {
                 this.carMarkers = response.data.map(key => {
-                    if (this.user.id!==1) {
-                        return { position: { lat: -37.6650631, lng: 144.85687380000002 } };
-                    }
                     return {
                         position: {
                             lat: parseFloat(key.position.lat),
@@ -112,7 +109,11 @@ const app = new Vue({
                                 currentTrip.pick_up,
                                 currentTrip.drop_off,
                                 currentTrip.driver_pos,
-                                () => {}
+                                (response) => {
+                                    this.userTrip = {
+                                        google: response.routes[0].legs[0]
+                                    };
+                                }
                             );
                             this.directionsNodes = this.user.id !== currentTrip.driver_id ? null : true;
                         }

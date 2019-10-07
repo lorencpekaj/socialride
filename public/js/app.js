@@ -71476,15 +71476,6 @@ var app = new Vue({
 
       axios.get('/user_location').then(function (response) {
         _this2.carMarkers = response.data.map(function (key) {
-          if (_this2.user.id !== 1) {
-            return {
-              position: {
-                lat: -37.6650631,
-                lng: 144.85687380000002
-              }
-            };
-          }
-
           return {
             position: {
               lat: parseFloat(key.position.lat),
@@ -71505,7 +71496,11 @@ var app = new Vue({
         if (currentTrip) {
           // check if the driver id changes at all, if it does then we update map
           if (!_this3.directionsDisplay || _this3.tripDriver !== currentTrip.driver_id) {
-            _this3.setDirections(currentTrip.pick_up, currentTrip.drop_off, currentTrip.driver_pos, function () {});
+            _this3.setDirections(currentTrip.pick_up, currentTrip.drop_off, currentTrip.driver_pos, function (response) {
+              _this3.userTrip = {
+                google: response.routes[0].legs[0]
+              };
+            });
 
             _this3.directionsNodes = _this3.user.id !== currentTrip.driver_id ? null : true;
           }
