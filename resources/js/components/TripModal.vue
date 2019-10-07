@@ -18,7 +18,14 @@
                     <p class="text-info">Your travel of {{ distanceText }} will take {{ durationText }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                        @click="$root.clearDirections()"
+                    >
+                        Close
+                    </button>
                     <button
                         type="button"
                         class="btn btn-primary"

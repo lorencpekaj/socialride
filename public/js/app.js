@@ -1879,7 +1879,6 @@ __webpack_require__.r(__webpack_exports__);
         driver_id: this.$root.user.id
       }).then(function (_ref) {
         var data = _ref.data;
-        console.log(data);
         $(_this.$el).modal('hide');
       });
     }
@@ -2085,14 +2084,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       currentPlace: null,
       userLocationTimer: null,
-      tripData: {},
-      directionsDisplay: null
+      tripData: {}
     };
   },
   created: function created() {
@@ -2122,12 +2119,9 @@ __webpack_require__.r(__webpack_exports__);
           lng: this.currentPlace.geometry.location.lng()
         }; // clear existing directions
 
-        if (this.directionsDisplay) {
-          this.directionsDisplay.setMap(null);
-        }
-
-        this.directionsDisplay = new google.maps.DirectionsRenderer();
-        this.directionsDisplay.setMap(this.$root.mapRef.$mapObject);
+        this.$root.clearDirections();
+        this.$root.directionsDisplay = new google.maps.DirectionsRenderer();
+        this.$root.directionsDisplay.setMap(this.$root.mapRef.$mapObject);
         var directionsService = new google.maps.DirectionsService();
         directionsService.route({
           origin: this.$root.userLocation,
@@ -2135,7 +2129,7 @@ __webpack_require__.r(__webpack_exports__);
           travelMode: 'DRIVING'
         }, function (response, status) {
           if (status === 'OK') {
-            _this.directionsDisplay.setDirections(response);
+            _this.$root.directionsDisplay.setDirections(response);
 
             _this.setTripData(response.routes[0].legs[0]);
 
@@ -2178,6 +2172,13 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -56590,9 +56591,14 @@ var render = function() {
               "button",
               {
                 staticClass: "btn btn-secondary",
-                attrs: { type: "button", "data-dismiss": "modal" }
+                attrs: { type: "button", "data-dismiss": "modal" },
+                on: {
+                  click: function($event) {
+                    return _vm.$root.clearDirections()
+                  }
+                }
               },
-              [_vm._v("Close")]
+              [_vm._v("\n                    Close\n                ")]
             ),
             _vm._v(" "),
             _c(
@@ -71458,7 +71464,8 @@ var app = new Vue({
     carMarkerTimer: null,
     carMarkers: [],
     availableTripsTimer: [],
-    availableTrips: []
+    availableTrips: [],
+    directionsDisplay: null
   },
   created: function created() {
     // every 10 seconds the user location will update
@@ -71511,6 +71518,12 @@ var app = new Vue({
           _this3.availableTrips = data.data;
         }
       });
+    },
+    // clear map of directions
+    clearDirections: function clearDirections() {
+      if (this.directionsDisplay) {
+        this.directionsDisplay.setMap(null);
+      }
     }
   },
   components: {

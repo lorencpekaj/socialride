@@ -55,6 +55,7 @@ const app = new Vue({
         carMarkers: [],
         availableTripsTimer: [],
         availableTrips: [],
+        directionsDisplay: null,
     },
 
     created: function () {
@@ -107,6 +108,13 @@ const app = new Vue({
                         this.availableTrips = data.data;
                     }
                 });
+        },
+
+        // clear map of directions
+        clearDirections: function () {
+            if (this.directionsDisplay) {
+                this.directionsDisplay.setMap(null);
+            }
         },
     },
 

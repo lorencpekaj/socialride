@@ -17,7 +17,6 @@
         <trip-modal
             ref="tripInfo"
             v-bind="tripData"
-
         ></trip-modal>
     </div>
 </template>
@@ -29,7 +28,6 @@ export default {
             currentPlace: null,
             userLocationTimer: null,
             tripData: {},
-            directionsDisplay: null,
         };
     },
 
@@ -62,12 +60,9 @@ export default {
                 };
 
                 // clear existing directions
-                if (this.directionsDisplay) {
-                    this.directionsDisplay.setMap(null);
-                }
-
-                this.directionsDisplay = new google.maps.DirectionsRenderer;
-                this.directionsDisplay.setMap(this.$root.mapRef.$mapObject);
+                this.$root.clearDirections();
+                this.$root.directionsDisplay = new google.maps.DirectionsRenderer;
+                this.$root.directionsDisplay.setMap(this.$root.mapRef.$mapObject);
 
                 const directionsService = new google.maps.DirectionsService;
                 directionsService.route({
@@ -77,7 +72,7 @@ export default {
                 },
                 (response, status) => {
                     if (status === 'OK') {
-                        this.directionsDisplay.setDirections(response);
+                        this.$root.directionsDisplay.setDirections(response);
                         this.setTripData(response.routes[0].legs[0]);
                         $(this.$refs.tripInfo.$el).modal('show');
                     } else {

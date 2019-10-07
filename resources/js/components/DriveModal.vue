@@ -45,7 +45,6 @@ export default {
                     driver_id: this.$root.user.id
                 })
                 .then(({ data }) => {
-                    console.log(data);
                     $(this.$el).modal('hide');
                 });
 
