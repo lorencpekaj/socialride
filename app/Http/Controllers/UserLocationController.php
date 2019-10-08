@@ -59,6 +59,10 @@ class UserLocationController extends Controller
     {
         $user = \Auth::user();
 
+        if ($user->freeze_location === true) {
+            return $this->error('User location frozen, cannot update!');
+        }
+
         $userLocation = new UserLocation();
         $userLocation->user_id = $user->id;
         $userLocation->lat = $request->json()->get('lat');
