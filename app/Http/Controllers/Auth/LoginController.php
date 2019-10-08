@@ -47,7 +47,6 @@ class LoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
-        $user->driving = $request->get('type') === 'driver';
-        $user->save();
+        //
     }
 }

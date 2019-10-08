@@ -59,10 +59,6 @@ class UserLocationController extends Controller
     {
         $user = \Auth::user();
 
-        // if ($user->driving === false) {
-        //     return $this->error('User is not driving');
-        // }
-
         $userLocation = new UserLocation();
         $userLocation->user_id = $user->id;
         $userLocation->lat = $request->json()->get('lat');

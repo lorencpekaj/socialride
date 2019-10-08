@@ -18,9 +18,6 @@ class TripController extends Controller
     public function requestPickup(Request $request)
     {
         $user = \Auth::user();
-        // if ($user->is_driving !== false) {
-        //     return $this->error('This user is currently driving');
-        // }
 
         $existingTrip = Trip::where('passenger_id', $user->id)
             ->orWhere('driver_id', $user->id)
