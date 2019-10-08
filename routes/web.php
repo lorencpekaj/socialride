@@ -25,6 +25,13 @@ Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
 
+// Facebook login
+Route::prefix('facebook')
+    ->group(function () {
+        Route::get('/', 'FacebookAuthController@redirect')->name('facebook');
+        Route::get('/callback', 'FacebookAuthController@callback');
+    });
+
 // Password Reset Routes...
 Route::resetPassword();
 Route::emailVerification();
