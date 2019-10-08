@@ -105,7 +105,10 @@ class TripController extends Controller
         }
 
         // otherwise just show all trips
-        $trips = Trip::with(['pickUp', 'dropOff', 'passenger'])
+        $trips = Trip::whereHas('passenger', function ($passenger) {
+                $passenger->recentlyLogged();
+            })
+            ->with(['pickUp', 'dropOff', 'passenger'])
             ->whereNull('driver_id')
             ->get()
             ->map(function ($trip) {
@@ -120,9 +123,9 @@ class TripController extends Controller
                     'pick_up' => $trip->pickUp->only(['lat', 'lng', 'address']),
                     'drop_off' => $trip->dropOff->only(['lat', 'lng', 'address']),
                 ];
-            })
-            ->toArray();
-        return $this->success($trips);
+            });
+
+        return $this->success($trips->toArray());
     }
 
     /**

@@ -22,8 +22,8 @@ class UserLocationController extends Controller
     {
         $user = \Auth::user();
 
-        // todo: filter by logged in users
         $users = User::where('id', '<>', $user->id)
+            ->recentlyLogged()
             ->with('locations')
             ->get();
 
@@ -63,5 +63,4 @@ class UserLocationController extends Controller
             $userLocation->only(['user_id', 'lat', 'lng'])
         );
     }
-
 }
