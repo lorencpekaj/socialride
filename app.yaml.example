@@ -14,3 +14,7 @@ env_variables:
   DB_DATABASE:
   DB_USERNAME:
   DB_PASSWORD:
+  # facebook auth
+  FACEBOOK_APP_ID:
+  FACEBOOK_APP_SECRET:
+  FACEBOOK_REDIRECT:
