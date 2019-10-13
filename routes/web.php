@@ -34,7 +34,6 @@ Route::prefix('facebook')
 
 // Password Reset Routes...
 Route::resetPassword();
-Route::emailVerification();
 
 // User location
 Route::resource('user_location', 'UserLocationController');
