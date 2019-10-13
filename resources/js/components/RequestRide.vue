@@ -1,19 +1,24 @@
 <template>
     <div class="location-search" v-if="this.$root.userTrip === null">
-        <gmap-autocomplete
-            @place_changed="setPlace"
-            class="form-control form-control-lg"
-            :options="{
-                componentRestrictions: {country: 'au'}
-            }"
-        >
-        </gmap-autocomplete>
-        <button
-            @click="addMarker"
-            class="btn btn-lg btn-primary"
-        >
-            Request Pickup
-        </button>
+        <div class="input-group shadow-sm">
+            <gmap-autocomplete
+                @place_changed="setPlace"
+                class="form-control form-control-lg"
+                placeholder="Where do you want to go?"
+                :options="{
+                    componentRestrictions: {country: 'au'}
+                }"
+            >
+            </gmap-autocomplete>
+            <div class="input-group-append">
+                <button
+                    @click="addMarker"
+                    class="btn btn-lg btn-primary m-0"
+                >
+                    Request Pickup
+                </button>
+            </div>
+        </div>
         <trip-modal
             ref="tripInfo"
             v-bind="tripData"

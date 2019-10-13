@@ -9,7 +9,7 @@
                         <trip-status></trip-status>
 
                         <!-- show available trips otherwise -->
-                        <div class="card card-passengers" v-if="trips.length">
+                        <div class="card card-passengers shadow-sm" v-if="trips.length">
                             <div class="card-header">
                                 Passengers awaiting for a driver
                                 <button

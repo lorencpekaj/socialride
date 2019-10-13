@@ -1,6 +1,6 @@
 <template>
-    <div class="card card-directions" v-if="trip !== null">
-        <div class="card-header">
+    <div class="card card-directions shadow-sm" v-if="trip !== null">
+        <div class="card-body">
             <span v-if="isDriver">
                 You are driving {{ trip.passenger_name }}
             </span>
@@ -16,6 +16,7 @@
                     href="#"
                     class="btn btn-sm btn-success"
                     @click="cancelTrip"
+                    v-if="isDriver"
                 >
                     Complete Trip
                 </a>
@@ -23,6 +24,7 @@
                     href="#"
                     class="btn btn-sm btn-danger"
                     @click="cancelTrip"
+                    v-if="!isDriver"
                 >
                     Cancel
                 </a>

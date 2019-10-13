@@ -1936,6 +1936,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -2061,6 +2066,11 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2245,6 +2255,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -56147,46 +56159,53 @@ var render = function() {
       attrs: { tabindex: "-1", role: "dialog", "aria-hidden": "true" }
     },
     [
-      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _c("p", { staticClass: "font-weight-bold" }, [
-              _vm._v("You are picking up")
+      _c(
+        "div",
+        {
+          staticClass: "modal-dialog modal-dialog-centered",
+          attrs: { role: "document" }
+        },
+        [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("p", { staticClass: "font-weight-bold" }, [
+                _vm._v("You are picking up")
+              ]),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(_vm.getPickUpAddress))]),
+              _vm._v(" "),
+              _c("p", { staticClass: "font-weight-bold" }, [
+                _vm._v("Their destination is")
+              ]),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(_vm.getDropOffAddress))])
             ]),
             _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.getPickUpAddress))]),
-            _vm._v(" "),
-            _c("p", { staticClass: "font-weight-bold" }, [
-              _vm._v("Their destination is")
-            ]),
-            _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.getDropOffAddress))])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-footer" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-secondary",
-                attrs: { type: "button", "data-dismiss": "modal" }
-              },
-              [_vm._v("Close")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { type: "button" },
-                on: { click: _vm.acceptPickup }
-              },
-              [_vm._v("\n                    Pickup Rider\n                ")]
-            )
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-dismiss": "modal" }
+                },
+                [_vm._v("Close")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: { click: _vm.acceptPickup }
+                },
+                [_vm._v("\n                    Pickup Rider\n                ")]
+              )
+            ])
           ])
-        ])
-      ])
+        ]
+      )
     ]
   )
 }
@@ -56196,7 +56215,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Request a driver")]),
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Pick up a passenger")]),
       _vm._v(" "),
       _c(
         "button",
@@ -56245,7 +56264,12 @@ var render = function() {
           attrs: {
             center: _vm.$root.userLocation,
             zoom: 12,
-            "map-type-id": "terrain"
+            "map-type-id": "terrain",
+            options: {
+              mapTypeControl: false,
+              streetViewControl: false,
+              fullscreenControl: false
+            }
           }
         },
         [
@@ -56311,127 +56335,136 @@ var render = function() {
                 _c("trip-status"),
                 _vm._v(" "),
                 _vm.trips.length
-                  ? _c("div", { staticClass: "card card-passengers" }, [
-                      _c("div", { staticClass: "card-header" }, [
-                        _vm._v(
-                          "\n                            Passengers awaiting for a driver\n                            "
-                        ),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary btn-sm float-right",
-                            attrs: { type: "button" },
-                            on: {
-                              click: function($event) {
-                                _vm.driving = !_vm.driving
+                  ? _c(
+                      "div",
+                      { staticClass: "card card-passengers shadow-sm" },
+                      [
+                        _c("div", { staticClass: "card-header" }, [
+                          _vm._v(
+                            "\n                            Passengers awaiting for a driver\n                            "
+                          ),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary btn-sm float-right",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  _vm.driving = !_vm.driving
+                                }
                               }
-                            }
-                          },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(_vm.driving ? "Hide All" : "Show All") +
-                                "\n                            "
-                            )
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _vm.driving
-                        ? _c(
-                            "ul",
-                            { staticClass: "list-group list-group-passengers" },
-                            _vm._l(_vm.trips, function(trip) {
-                              return _c(
-                                "a",
-                                {
-                                  key: trip.id,
-                                  staticClass:
-                                    "list-group-item list-group-item-action flex-column align-items-start",
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      return _vm.selectTrip(trip)
-                                    }
-                                  }
-                                },
-                                [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "d-flex w-100 justify-content-between"
-                                    },
-                                    [
-                                      _c("h5", { staticClass: "mb-1" }, [
-                                        _vm._v(
-                                          _vm._s(trip.passenger.name) +
-                                            " needs a driver!"
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("div", [
-                                        _c(
-                                          "span",
-                                          {
-                                            staticClass: "badge badge-secondary"
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                            " +
-                                                _vm._s(
-                                                  _vm.distanceFormat(
-                                                    trip.distance
-                                                  )
-                                                ) +
-                                                "\n                                        "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "span",
-                                          {
-                                            staticClass: "badge badge-warning"
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                            " +
-                                                _vm._s(
-                                                  _vm.durationFormat(
-                                                    trip.duration
-                                                  )
-                                                ) +
-                                                "\n                                        "
-                                            )
-                                          ]
-                                        )
-                                      ])
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("p", { staticClass: "mb-0 small" }, [
-                                    _vm._v(
-                                      "\n                                    Pickup: " +
-                                        _vm._s(trip.pick_up.address) +
-                                        "\n                                "
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("p", { staticClass: "mb-0 small" }, [
-                                    _vm._v(
-                                      "\n                                    Destination: " +
-                                        _vm._s(trip.drop_off.address) +
-                                        "\n                                "
-                                    )
-                                  ])
-                                ]
+                            },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(
+                                    _vm.driving ? "Hide All" : "Show All"
+                                  ) +
+                                  "\n                            "
                               )
-                            }),
-                            0
+                            ]
                           )
-                        : _vm._e()
-                    ])
+                        ]),
+                        _vm._v(" "),
+                        _vm.driving
+                          ? _c(
+                              "ul",
+                              {
+                                staticClass: "list-group list-group-passengers"
+                              },
+                              _vm._l(_vm.trips, function(trip) {
+                                return _c(
+                                  "a",
+                                  {
+                                    key: trip.id,
+                                    staticClass:
+                                      "list-group-item list-group-item-action flex-column align-items-start",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.selectTrip(trip)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "d-flex w-100 justify-content-between"
+                                      },
+                                      [
+                                        _c("h5", { staticClass: "mb-1" }, [
+                                          _vm._v(
+                                            _vm._s(trip.passenger.name) +
+                                              " needs a driver!"
+                                          )
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("div", [
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass:
+                                                "badge badge-secondary"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                            " +
+                                                  _vm._s(
+                                                    _vm.distanceFormat(
+                                                      trip.distance
+                                                    )
+                                                  ) +
+                                                  "\n                                        "
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "span",
+                                            {
+                                              staticClass: "badge badge-warning"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                            " +
+                                                  _vm._s(
+                                                    _vm.durationFormat(
+                                                      trip.duration
+                                                    )
+                                                  ) +
+                                                  "\n                                        "
+                                              )
+                                            ]
+                                          )
+                                        ])
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("p", { staticClass: "mb-0 small" }, [
+                                      _vm._v(
+                                        "\n                                    Pickup: " +
+                                          _vm._s(trip.pick_up.address) +
+                                          "\n                                "
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("p", { staticClass: "mb-0 small" }, [
+                                      _vm._v(
+                                        "\n                                    Destination: " +
+                                          _vm._s(trip.drop_off.address) +
+                                          "\n                                "
+                                      )
+                                    ])
+                                  ]
+                                )
+                              }),
+                              0
+                            )
+                          : _vm._e()
+                      ]
+                    )
                   : _vm._e()
               ],
               1
@@ -56475,23 +56508,33 @@ var render = function() {
         "div",
         { staticClass: "location-search" },
         [
-          _c("gmap-autocomplete", {
-            staticClass: "form-control form-control-lg",
-            attrs: {
-              options: {
-                componentRestrictions: { country: "au" }
-              }
-            },
-            on: { place_changed: _vm.setPlace }
-          }),
-          _vm._v(" "),
           _c(
-            "button",
-            {
-              staticClass: "btn btn-lg btn-primary",
-              on: { click: _vm.addMarker }
-            },
-            [_vm._v("\n        Request Pickup\n    ")]
+            "div",
+            { staticClass: "input-group shadow-sm" },
+            [
+              _c("gmap-autocomplete", {
+                staticClass: "form-control form-control-lg",
+                attrs: {
+                  placeholder: "Where do you want to go?",
+                  options: {
+                    componentRestrictions: { country: "au" }
+                  }
+                },
+                on: { place_changed: _vm.setPlace }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "input-group-append" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-lg btn-primary m-0",
+                    on: { click: _vm.addMarker }
+                  },
+                  [_vm._v("\n                Request Pickup\n            ")]
+                )
+              ])
+            ],
+            1
           ),
           _vm._v(" "),
           _c(
@@ -56537,60 +56580,67 @@ var render = function() {
       }
     },
     [
-      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _c("p", { staticClass: "font-weight-bold" }, [
-              _vm._v("You are requesting pickup from")
+      _c(
+        "div",
+        {
+          staticClass: "modal-dialog modal-dialog-centered",
+          attrs: { role: "document" }
+        },
+        [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c("p", { staticClass: "font-weight-bold" }, [
+                _vm._v("You are requesting pickup from")
+              ]),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(_vm.start_address))]),
+              _vm._v(" "),
+              _c("p", { staticClass: "font-weight-bold" }, [
+                _vm._v("Your destination is")
+              ]),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(_vm.end_address))]),
+              _vm._v(" "),
+              _c("p", { staticClass: "text-info" }, [
+                _vm._v(
+                  "Your travel of " +
+                    _vm._s(_vm.distanceText) +
+                    " will take " +
+                    _vm._s(_vm.durationText)
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.start_address))]),
-            _vm._v(" "),
-            _c("p", { staticClass: "font-weight-bold" }, [
-              _vm._v("Your destination is")
-            ]),
-            _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.end_address))]),
-            _vm._v(" "),
-            _c("p", { staticClass: "text-info" }, [
-              _vm._v(
-                "Your travel of " +
-                  _vm._s(_vm.distanceText) +
-                  " will take " +
-                  _vm._s(_vm.durationText)
+            _c("div", { staticClass: "modal-footer" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-secondary",
+                  attrs: { type: "button", "data-dismiss": "modal" },
+                  on: {
+                    click: function($event) {
+                      return _vm.$root.clearDirections()
+                    }
+                  }
+                },
+                [_vm._v("\n                    Close\n                ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { type: "button" },
+                  on: { click: _vm.requestRide }
+                },
+                [_vm._v("\n                    Request Ride\n                ")]
               )
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-footer" }, [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-secondary",
-                attrs: { type: "button", "data-dismiss": "modal" },
-                on: {
-                  click: function($event) {
-                    return _vm.$root.clearDirections()
-                  }
-                }
-              },
-              [_vm._v("\n                    Close\n                ")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { type: "button" },
-                on: { click: _vm.requestRide }
-              },
-              [_vm._v("\n                    Request Ride\n                ")]
-            )
           ])
-        ])
-      ])
+        ]
+      )
     ]
   )
 }
@@ -56643,8 +56693,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _vm.trip !== null
-    ? _c("div", { staticClass: "card card-directions" }, [
-        _c("div", { staticClass: "card-header" }, [
+    ? _c("div", { staticClass: "card card-directions shadow-sm" }, [
+        _c("div", { staticClass: "card-body" }, [
           _vm.isDriver
             ? _c("span", [
                 _vm._v(
@@ -56668,25 +56718,29 @@ var render = function() {
               ]),
           _vm._v(" "),
           _c("span", { staticClass: "float-right" }, [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-sm btn-success",
-                attrs: { href: "#" },
-                on: { click: _vm.cancelTrip }
-              },
-              [_vm._v("\n                Complete Trip\n            ")]
-            ),
+            _vm.isDriver
+              ? _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-sm btn-success",
+                    attrs: { href: "#" },
+                    on: { click: _vm.cancelTrip }
+                  },
+                  [_vm._v("\n                Complete Trip\n            ")]
+                )
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-sm btn-danger",
-                attrs: { href: "#" },
-                on: { click: _vm.cancelTrip }
-              },
-              [_vm._v("\n                Cancel\n            ")]
-            )
+            !_vm.isDriver
+              ? _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-sm btn-danger",
+                    attrs: { href: "#" },
+                    on: { click: _vm.cancelTrip }
+                  },
+                  [_vm._v("\n                Cancel\n            ")]
+                )
+              : _vm._e()
           ])
         ])
       ])

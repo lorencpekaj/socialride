@@ -24,6 +24,7 @@
         <main class="py-4 content-center">
             @yield('content')
         </main>
+        <div class="rmit-logo"></div>
     </div>
 </body>
 </html>

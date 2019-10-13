@@ -6,6 +6,11 @@
             :zoom="12"
             map-type-id="terrain"
             class="gmap-wrapper"
+            :options="{
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: false,
+            }"
         >
             <!-- driver locations -->
             <gmap-marker

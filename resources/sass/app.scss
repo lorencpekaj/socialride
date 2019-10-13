@@ -6,6 +6,7 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import "~font-awesome/scss/font-awesome.scss";
 
 // Theme
 @import 'map';
@@ -17,4 +18,22 @@ main.content-center {
     justify-content: center;
     align-items: center;
     background: url('/images/background.jpg');
+}
+
+.label-socialride {
+    text-transform: uppercase;
+    font-size: 11px;
+    @extend .text-muted;
+}
+
+.rmit-logo {
+    background: url('/images/rmit_logo.svg');
+    width: 125px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    margin: 20px;
+    right: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
