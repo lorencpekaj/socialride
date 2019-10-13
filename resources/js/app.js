@@ -84,16 +84,18 @@ const app = new Vue({
 
         // update the car markers periodically
         carMarkerUpdate: function () {
-            axios.get('/user_location').then(response => {
-                this.carMarkers = response.data.map(key => {
-                    return {
-                        position: {
-                            lat: parseFloat(key.position.lat),
-                            lng: parseFloat(key.position.lng)
-                        }
-                    };
-                });
-            });
+            axios
+                .get('/user_location').then(response => {
+                    this.carMarkers = response.data.map(key => {
+                        return {
+                            position: {
+                                lat: parseFloat(key.position.lat),
+                                lng: parseFloat(key.position.lng)
+                            }
+                        };
+                    });
+                })
+                .catch(() => {});
         },
 
         // get all the available trips
@@ -129,7 +131,8 @@ const app = new Vue({
                         this.userTrip = null;
                         this.availableTrips = data.data;
                     }
-                });
+                })
+                .catch(() => {});
         },
 
         // set the directions on a map

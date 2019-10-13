@@ -48,13 +48,16 @@ class User extends Authenticatable
     }
 
     /**
-     * Checks if a user's last recorded location was less than 60 minutes ago
+     * Checks if a user's last recorded location was less than 60 minutes ago,
+     * if the user location is frozen, then they will be forcefully shown
      */
     public function scopeRecentlyLogged($query)
     {
-        return $query->whereHas('locations', function ($location) {
-            $tenMinsAgo = Carbon::now()->subMinutes(60)->toDateTimeString();
-            $location->where('created_at', '>', $tenMinsAgo);
-        });
+        return $query
+            ->where('freeze_location', true)
+            ->orWhereHas('locations', function ($location) {
+                $tenMinsAgo = Carbon::now()->subMinutes(60)->toDateTimeString();
+                $location->where('created_at', '>', $tenMinsAgo);
+            });
     }
 }

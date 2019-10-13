@@ -85,10 +85,12 @@ export default {
                 };
 
                 // post the user location to the database
-                axios.post('/user_location', {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                });
+                axios
+                    .post('/user_location', {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    })
+                    .catch(() => {});
             });
         }
     }

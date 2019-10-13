@@ -49,7 +49,7 @@ class UserLocationController extends Controller
     {
         $user = \Auth::user();
 
-        if ($user->freeze_location === true) {
+        if ($user->freeze_location) {
             return $this->error('User location frozen, cannot update!');
         }
 

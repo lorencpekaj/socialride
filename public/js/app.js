@@ -2146,7 +2146,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.post('/user_location', {
           lat: position.coords.latitude,
           lng: position.coords.longitude
-        });
+        })["catch"](function () {});
       });
     }
   }
@@ -71535,7 +71535,7 @@ var app = new Vue({
             }
           };
         });
-      });
+      })["catch"](function () {});
     },
     // get all the available trips
     getAvailableTrips: function getAvailableTrips() {
@@ -71570,7 +71570,7 @@ var app = new Vue({
           _this3.userTrip = null;
           _this3.availableTrips = data.data;
         }
-      });
+      })["catch"](function () {});
     },
     // set the directions on a map
     setDirections: function setDirections(start, finish, driver, callback) {
