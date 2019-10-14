@@ -17,9 +17,8 @@
                 :key="index"
                 v-for="(m, index) in this.$root.carMarkers"
                 :position="m.position"
-                @click="center=m.position"
                 :icon="{
-                    url: require('../../images/icons/car.jpg'),
+                    url: require('../../images/icons/car.png'),
                     size: { width: 32, height: 32, f: 'px', b: 'px' },
                     scaledSize: { width: 32, height: 32, f: 'px', b: 'px' },
                 }"
@@ -27,6 +26,11 @@
 
             <!-- user location -->
             <gmap-marker
+                :icon="{
+                    url: require('../../images/icons/me.png'),
+                    size: { width: 32, height: 32, f: 'px', b: 'px' },
+                    scaledSize: { width: 32, height: 32, f: 'px', b: 'px' },
+                }"
                 :position="$root.userLocation">
             </gmap-marker>
         </GmapMap>

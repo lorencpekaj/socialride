@@ -1941,6 +1941,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -56171,7 +56175,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [
               _c("p", { staticClass: "font-weight-bold" }, [
-                _vm._v("You are picking up")
+                _vm._v("You are picking up at")
               ]),
               _vm._v(" "),
               _c("p", [_vm._v(_vm._s(_vm.getPickUpAddress))]),
@@ -56279,20 +56283,24 @@ var render = function() {
               attrs: {
                 position: m.position,
                 icon: {
-                  url: __webpack_require__(/*! ../../images/icons/car.jpg */ "./resources/images/icons/car.jpg"),
+                  url: __webpack_require__(/*! ../../images/icons/car.png */ "./resources/images/icons/car.png"),
                   size: { width: 32, height: 32, f: "px", b: "px" },
                   scaledSize: { width: 32, height: 32, f: "px", b: "px" }
-                }
-              },
-              on: {
-                click: function($event) {
-                  _vm.center = m.position
                 }
               }
             })
           }),
           _vm._v(" "),
-          _c("gmap-marker", { attrs: { position: _vm.$root.userLocation } })
+          _c("gmap-marker", {
+            attrs: {
+              icon: {
+                url: __webpack_require__(/*! ../../images/icons/me.png */ "./resources/images/icons/me.png"),
+                size: { width: 32, height: 32, f: "px", b: "px" },
+                scaledSize: { width: 32, height: 32, f: "px", b: "px" }
+              },
+              position: _vm.$root.userLocation
+            }
+          })
         ],
         2
       )
@@ -71423,14 +71431,25 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/images/icons/car.jpg":
+/***/ "./resources/images/icons/car.png":
 /*!****************************************!*\
-  !*** ./resources/images/icons/car.jpg ***!
+  !*** ./resources/images/icons/car.png ***!
   \****************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/images/car.jpg?049737d0ea1665b0ac75724645d23ed3";
+module.exports = "/images/car.png?487e4de74ae79c9c8390802da328219e";
+
+/***/ }),
+
+/***/ "./resources/images/icons/me.png":
+/*!***************************************!*\
+  !*** ./resources/images/icons/me.png ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/images/me.png?cea5fdd771929ac4366e26454bf2f47d";
 
 /***/ }),
 

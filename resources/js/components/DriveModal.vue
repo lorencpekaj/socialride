@@ -9,7 +9,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p class="font-weight-bold">You are picking up</p>
+                    <p class="font-weight-bold">You are picking up at</p>
                     <p>{{ getPickUpAddress }}</p>
                     <p class="font-weight-bold">Their destination is</p>
                     <p>{{ getDropOffAddress }}</p>
