@@ -6,8 +6,10 @@ use App\Trip;
 use Faker\Generator as Faker;
 
 $factory->define(Trip::class, function (Faker $faker) {
+    // making the duration proportional to distance
+    $randomDistance = rand(1000, 25000);
     return [
-        'distance' => rand(1000, 25000),
-        'duration' => rand(300, 3600),
+        'distance' => $randomDistance,
+        'duration' => $randomDistance / 11,
     ];
 });
