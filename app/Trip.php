@@ -22,7 +22,7 @@ class Trip extends Model
      */
     public function dropOff()
     {
-        return $this->hasOne('App\PickUp');
+        return $this->hasOne('App\DropOff');
     }
 
     /**
@@ -30,7 +30,7 @@ class Trip extends Model
      */
     public function pickUp()
     {
-        return $this->hasOne('App\DropOff');
+        return $this->hasOne('App\PickUp');
     }
 
     /**

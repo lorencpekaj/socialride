@@ -1888,7 +1888,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.pick_up ? this.pick_up.address : '';
     },
     getDropOffAddress: function getDropOffAddress() {
-      return this.pick_up ? this.drop_off.address : '';
+      return this.drop_off ? this.drop_off.address : '';
     }
   }
 });
@@ -71553,8 +71553,6 @@ var app = new Vue({
                 google: response.routes[0].legs[0]
               };
             });
-
-            _this3.directionsNodes = _this3.user.id !== currentTrip.driver_id ? null : true;
           }
 
           _this3.tripDriver = currentTrip.driver_id;

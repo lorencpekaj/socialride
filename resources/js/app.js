@@ -117,7 +117,6 @@ const app = new Vue({
                                     };
                                 }
                             );
-                            this.directionsNodes = this.user.id !== currentTrip.driver_id ? null : true;
                         }
                         this.tripDriver = currentTrip.driver_id;
                         this.userTrip = currentTrip;

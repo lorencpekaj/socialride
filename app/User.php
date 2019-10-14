@@ -48,6 +48,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Return the trip where the user is a passenger
+     *
+     * @return App\Trip Trip
+     */
+    public function trip()
+    {
+        return $this->hasOne('App\Trip', 'passenger_id', 'id');
+    }
+
+    /**
      * Checks if a user's last recorded location was less than 60 minutes ago,
      * if the user location is frozen, then they will be forcefully shown
      */

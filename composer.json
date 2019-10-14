@@ -62,7 +62,8 @@
         "post-install-cmd": [
             "chmod -R 755 bootstrap\/cache",
             "php artisan cache:clear",
-            "php artisan migrate:fresh"
+            "php artisan migrate:fresh",
+            "php artisan db:seed"
         ]
     }
 }

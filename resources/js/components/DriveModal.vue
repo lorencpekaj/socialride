@@ -57,7 +57,7 @@ export default {
         },
 
         getDropOffAddress() {
-            return this.pick_up ? this.drop_off.address : '';
+            return this.drop_off ? this.drop_off.address : '';
         }
     }
 }
