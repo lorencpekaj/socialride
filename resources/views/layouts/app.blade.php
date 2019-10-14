@@ -26,49 +26,58 @@
         <google-map></google-map>
 
         <!-- begin navbar -->
-        <nav class="navbar navbar-expand-md bg-primary border-primary navbar-light shadow-sm">
+        <nav class="navbar navbar-expand bg-primary border-primary navbar-light shadow-sm p-0">
             <div class="container align-center">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <!-- Left Side Of Navbar -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{{ url('/') }}">
+                            {{ config('app.name', 'Laravel') }}
+                        </a>
+                    </li>
+                </ul>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                <!-- Right Side Of Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- Authentication Links -->
+                    @guest
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="{{ url('/') }}">
-                                {{ config('app.name', 'Laravel') }}
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                        @endif
+                    @else
+                        <li class="nav-item">
+                            <a
+                                class="nav-link text-white"
+                                v-bind:class="{ frozen: this.$root.user && this.$root.user.freeze_location === 1 }"
+                                @@click="this.$root.freezeLocation"
+                                href="#"
+                            >
+                                @{{
+                                    this.$root.user && this.$root.user.freeze_location === 1 ?
+                                    'Unlock' :
+                                    'Lock'
+                                }} Location
+                            </button>
                             </a>
                         </li>
-                    </ul>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link text-white" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                    @endguest
+                </ul>
             </div>
         </nav>
 

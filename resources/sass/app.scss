@@ -37,3 +37,18 @@ main.content-center {
     background-size: contain;
     background-repeat: no-repeat;
 }
+
+.navbar, .navbar-nav, .nav-item {
+    height: 50px;
+}
+
+.nav-link {
+    @extend .pr-3;
+    @extend .pl-3;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    &.frozen {
+        background-color: darken($red, 15%);
+    }
+}

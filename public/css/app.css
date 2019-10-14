@@ -8357,6 +8357,7 @@ button.bg-dark:focus {
 }
 
 .pr-3,
+.nav-link,
 .px-3 {
   padding-right: 1rem !important;
 }
@@ -8367,6 +8368,7 @@ button.bg-dark:focus {
 }
 
 .pl-3,
+.nav-link,
 .px-3 {
   padding-left: 1rem !important;
 }
@@ -13747,5 +13749,21 @@ main.content-center {
   right: 0;
   background-size: contain;
   background-repeat: no-repeat;
+}
+
+.navbar,
+.navbar-nav,
+.nav-item {
+  height: 50px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-link.frozen {
+  background-color: #ae1c17;
 }
 

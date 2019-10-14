@@ -71602,6 +71602,18 @@ var app = new Vue({
       if (this.directionsDisplay) {
         this.directionsDisplay.setMap(null);
       }
+    },
+    // freeze user location
+    freezeLocation: function freezeLocation() {
+      var _this5 = this;
+
+      axios.get('/freeze_location').then(function (_ref2) {
+        var data = _ref2.data;
+
+        if (data.success === true) {
+          _this5.fetchUser();
+        }
+      });
     }
   },
   components: {

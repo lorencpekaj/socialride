@@ -166,6 +166,17 @@ const app = new Vue({
                 this.directionsDisplay.setMap(null);
             }
         },
+
+        // freeze user location
+        freezeLocation: function () {
+            axios
+                .get('/freeze_location')
+                .then(({ data }) => {
+                    if (data.success === true) {
+                        this.fetchUser();
+                    }
+                });
+        }
     },
 
     components: {

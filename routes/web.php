@@ -37,6 +37,7 @@ Route::resetPassword();
 
 // User location
 Route::resource('user_location', 'UserLocationController');
+Route::get('freeze_location', 'UserLocationController@freeze')->name('freeze_location');
 
 // Trip
 Route::prefix('trip')

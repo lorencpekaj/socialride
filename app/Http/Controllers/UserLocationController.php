@@ -63,4 +63,19 @@ class UserLocationController extends Controller
             $userLocation->only(['user_id', 'lat', 'lng'])
         );
     }
+
+    /**
+     * (Un-)Freeze a user location
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function freeze()
+    {
+        $user = \Auth::user();
+        $user->freeze_location = !$user->freeze_location;
+        $user->save();
+        return $this->success(
+            $user->only(['id', 'freeze_location'])
+        );
+    }
 }
