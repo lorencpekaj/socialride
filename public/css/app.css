@@ -13742,7 +13742,7 @@ main.content-center {
 .rmit-logo {
   background: url("/images/rmit_logo.svg");
   width: 125px;
-  height: 100%;
+  height: 50px;
   position: absolute;
   top: 0;
   margin: 20px;
