@@ -9,6 +9,7 @@ env_variables:
   SESSION_DRIVER: cookie
   APP_LOG: errorlog
   APP_KEY:
+  APP_URL:
   # aws
   DB_HOST:
   DB_DATABASE:
