@@ -13751,6 +13751,42 @@ main.content-center {
   background-repeat: no-repeat;
 }
 
+.icon-legend {
+  position: absolute;
+  bottom: 50px;
+  margin-left: 25px;
+  background: #fff;
+  padding: 10px;
+}
+
+.icon-legend .legend-me,
+.icon-legend .legend-another {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  color: #38c172;
+  margin-right: 10px;
+}
+
+.icon-legend .legend-me:before,
+.icon-legend .legend-another:before {
+  content: "";
+  display: block;
+  height: 32px;
+  width: 32px;
+  background: url("/images/me.png") no-repeat;
+  background-size: contain;
+  margin: 5px 10px;
+}
+
+.icon-legend .legend-another {
+  color: #3490dc;
+}
+
+.icon-legend .legend-another:before {
+  background-image: url("/images/car.png") !important;
+}
+
 .navbar,
 .navbar-nav,
 .nav-item {

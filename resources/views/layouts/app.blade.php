@@ -85,6 +85,11 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <div class="icon-legend d-none d-lg-block d-m-block shadow-sm rounded border">
+            <div class="legend-me">You</div>
+            <div class="legend-another">Other</div>
+        </div>
     </div>
 </body>
 </html>

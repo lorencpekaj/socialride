@@ -38,8 +38,39 @@ main.content-center {
     background-repeat: no-repeat;
 }
 
+.icon-legend {
+    position: absolute;
+    bottom: $navbar-height;
+    margin-left: $navbar-height / 2;
+    background: $white;
+    padding: 10px;
+    .legend-me, .legend-another {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        color: $green;
+        margin-right: 10px;
+        &:before {
+            content: '';
+            display: block;
+            height: 32px;
+            width: 32px;
+            background: url('/images/me.png') no-repeat;
+            background-size: contain;
+            margin: 5px 10px;
+        }
+    }
+
+    .legend-another {
+        color: $blue;
+        &:before {
+            background-image: url('/images/car.png') !important;
+        }
+    }
+}
+
 .navbar, .navbar-nav, .nav-item {
-    height: 50px;
+    height: $navbar-height;
 }
 
 .nav-link {
