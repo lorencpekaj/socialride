@@ -6,9 +6,9 @@ runtime_config:
 
 env_variables:
   # Put production environment variables here.
+  SESSION_DRIVER: cookie
   APP_LOG: errorlog
   APP_KEY:
-  SESSION_DRIVER: cookie
   # aws
   DB_HOST:
   DB_DATABASE:
@@ -18,3 +18,9 @@ env_variables:
   FACEBOOK_APP_ID:
   FACEBOOK_APP_SECRET:
   FACEBOOK_REDIRECT:
+  # mailtrap auth
+  MAIL_DRIVER: smtp
+  MAIL_HOST: smtp.mailtrap.io
+  MAIL_PORT: 2525
+  MAIL_USERNAME:
+  MAIL_PASSWORD:
