@@ -13,8 +13,18 @@
 
 // Simple route to store the user data
 Route::get('me', function () {
-    return response()->json(Auth::user());
-});
+    $user = Auth::user();
+    return response()
+        ->json(
+            collect($user)
+                ->merge([
+                    'location' => [
+                        'lat' => $user->locations[0]->lat ?? 0,
+                        'lng' => $user->locations[0]->lng ?? 0,
+                    ]
+                ])
+        );
+})->middleware('auth');
 
 // Authentication Routes...
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');

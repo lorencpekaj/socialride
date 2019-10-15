@@ -78,18 +78,13 @@ export default {
 
         geolocate: function() {
             navigator.geolocation.getCurrentPosition(position => {
-                // store the user location for oneself
-                this.$root.userLocation = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
-
                 // post the user location to the database
                 axios
                     .post('/user_location', {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     })
+                    .then(() => this.$root.fetchUser())
                     .catch(() => {});
             });
         }

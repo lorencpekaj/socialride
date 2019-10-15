@@ -79,6 +79,10 @@ const app = new Vue({
         fetchUser: function () {
             axios.get('/me').then(response => {
                 this.user = response.data;
+                this.userLocation = {
+                    lat: parseFloat(this.user.location.lat),
+                    lng: parseFloat(this.user.location.lng),
+                };
             });
         },
 

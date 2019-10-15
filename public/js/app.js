@@ -2141,15 +2141,12 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       navigator.geolocation.getCurrentPosition(function (position) {
-        // store the user location for oneself
-        _this2.$root.userLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }; // post the user location to the database
-
+        // post the user location to the database
         axios.post('/user_location', {
           lat: position.coords.latitude,
           lng: position.coords.longitude
+        }).then(function () {
+          return _this2.$root.fetchUser();
         })["catch"](function () {});
       });
     }
@@ -71539,6 +71536,10 @@ var app = new Vue({
 
       axios.get('/me').then(function (response) {
         _this.user = response.data;
+        _this.userLocation = {
+          lat: parseFloat(_this.user.location.lat),
+          lng: parseFloat(_this.user.location.lng)
+        };
       });
     },
     // update the car markers periodically
