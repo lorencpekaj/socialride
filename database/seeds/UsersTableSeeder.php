@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
             });
 
         // generate random users
-        factory(App\User::class, 5)
+        factory(App\User::class, 10)
             ->create([
                 'freeze_location' => 1,
             ])
