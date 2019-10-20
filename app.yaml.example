@@ -8,6 +8,7 @@ env_variables:
   # Put production environment variables here.
   SESSION_DRIVER: cookie
   APP_LOG: errorlog
+  APP_ENV: local
   APP_NAME: Socialride
   APP_KEY:
   APP_URL:
