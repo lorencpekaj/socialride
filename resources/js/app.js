@@ -23,11 +23,7 @@ window.Vue = require("vue");
 
 Vue.use(VueGoogleMaps, {
     load: {
-        key: "AIzaSyBhCWsRqYhpi1ODCMoxrKbQj9jKs8YBvEs",
-        libraries: "places" // This is required if you use the Autocomplete plugin
-        // OR: libraries: 'places,drawing'
-        // OR: libraries: 'places,drawing,visualization'
-        // (as you require)
+        key: process.env.MIX_GOOGLE_MAPS_API_KEY,
     }
 });
 
