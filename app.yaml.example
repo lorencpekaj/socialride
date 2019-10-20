@@ -27,3 +27,5 @@ env_variables:
   MAIL_PORT: 2525
   MAIL_USERNAME:
   MAIL_PASSWORD:
+  # google maps
+  MIX_GOOGLE_MAPS_API_KEY:
