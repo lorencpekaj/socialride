@@ -71483,12 +71483,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__, {
   load: {
-    key: "AIzaSyBhCWsRqYhpi1ODCMoxrKbQj9jKs8YBvEs",
-    libraries: "places" // This is required if you use the Autocomplete plugin
-    // OR: libraries: 'places,drawing'
-    // OR: libraries: 'places,drawing,visualization'
-    // (as you require)
-
+    key: "AIzaSyBhCWsRqYhpi1ODCMoxrKbQj9jKs8YBvEs"
   }
 });
 /**
@@ -72120,8 +72115,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\socialride\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\socialride\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/socialride/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
